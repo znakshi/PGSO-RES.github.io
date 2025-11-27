@@ -12,15 +12,15 @@
         .pgso-blue { background-color: #3c5473; }
         .pgso-btn { background-color: #3c5473; }
         .pgso-btn:hover { background-color: #2c3e50; }
-        /* Custom style for form inputs to match screenshot gray */
         .form-input { background-color: #f3f4f6; border: none; }
         .form-input:focus { background-color: #ffffff; box-shadow: 0 0 0 2px #e5e7eb; }
         /* Calendar styles */
-        .cal-cell { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+        .cal-cell { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: all 0.2s; }
         .cal-past { color: #d1d5db; cursor: not-allowed; }
         .cal-reserved { background-color: #e5e7eb; color: #9ca3af; text-decoration: line-through; cursor: not-allowed; }
-        .cal-selected { background-color: #3c5473; color: white; font-weight: bold; }
-        .cal-available:hover { background-color: #f3f4f6; cursor: pointer; }
+        /* Active selected state */
+        .cal-selected { background-color: #3c5473 !important; color: white !important; font-weight: bold; transform: scale(1.1); }
+        .cal-available:hover { background-color: #e2e8f0; cursor: pointer; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
@@ -71,29 +71,31 @@
                 <p class="text-gray-500 mb-2">Rental of Open Gym (6:00 am to 5:00 pm Only)</p>
                 <div class="space-y-3 mb-2">
                     <div class="flex items-center">
-                        <input id="duration-4" name="duration" type="radio" class="w-4 h-4 text-pgso-blue bg-gray-100 border-gray-300" data-duration-value="4">
+                        <input id="duration-4" name="duration" type="radio" value="4" class="calculation-trigger w-4 h-4 text-pgso-blue bg-gray-100 border-gray-300" checked>
                         <label for="duration-4" class="ml-3 font-bold text-gray-800">4 hours and below (₱1,500)</label>
                     </div>
                     <div class="flex items-center">
-                        <input id="duration-8" name="duration" type="radio" class="w-4 h-4 text-pgso-blue bg-gray-100 border-gray-300" data-duration-value="8">
+                        <input id="duration-8" name="duration" type="radio" value="8" class="calculation-trigger w-4 h-4 text-pgso-blue bg-gray-100 border-gray-300">
                         <label for="duration-8" class="ml-3 font-bold text-gray-800">8 hours (2,500)</label>
                     </div>
+                </div>
 
                 <p class="text-s text-gray-500 mb-8">₱400 for every additional hour or a fraction thereof (if availed 4 hours only)</p>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                     <div>
                         <label class="block text-sm font-bold mb-2">Start Time *</label>
-                        <input type="time" class="form-input w-full rounded-md p-3 text-gray-500">
+                        <input type="time" id="start-time" class="calculation-trigger form-input w-full rounded-md p-3 text-gray-500">
                     </div>
                     <div>
                         <label class="block text-sm font-bold mb-2">End Time *</label>
-                        <input type="time" class="form-input w-full rounded-md p-3 text-gray-500">
+                        <input type="time" id="end-time" class="calculation-trigger form-input w-full rounded-md p-3 text-gray-500">
                     </div>
                 </div>
 
                 <div class="mb-8">
                      <label class="block text-sm font-bold mb-4">Select Date *</label>
+                     <input type="hidden" id="selected-date-input" name="date">
                      <div class="border border-gray-100 rounded-xl p-6 max-w-md mx-auto">
                         <div class="flex justify-between items-center mb-6">
                             <button type="button" class="text-gray-800 hover:bg-gray-100 p-2 rounded-full"><i class="fa-solid fa-chevron-left"></i></button>
@@ -104,13 +106,16 @@
                         <div class="grid grid-cols-7 gap-2 text-center mb-4 font-bold text-gray-800">
                             <div>Su</div><div>Mo</div><div>Tu</div><div>We</div><div>Th</div><div>Fr</div><div>Sa</div>
                         </div>
-                        <div class="grid grid-cols-7 gap-2 justify-items-center text-gray-700">
-                            <div class="cal-cell cal-past">26</div><div class="cal-cell cal-past">27</div><div class="cal-cell cal-past">28</div><div class="cal-cell cal-past">29</div><div class="cal-cell cal-past">30</div><div class="cal-cell cal-past">31</div><div class="cal-cell cal-available">1</div>
-                            <div class="cal-cell cal-available">2</div><div class="cal-cell cal-available">3</div><div class="cal-cell cal-available">4</div><div class="cal-cell cal-available">5</div><div class="cal-cell cal-available">6</div><div class="cal-cell cal-available">7</div><div class="cal-cell cal-available">8</div>
-                            <div class="cal-cell cal-available">9</div><div class="cal-cell cal-available">10</div><div class="cal-cell cal-available">11</div><div class="cal-cell cal-selected">12</div><div class="cal-cell cal-available">13</div><div class="cal-cell cal-available">14</div><div class="cal-cell cal-available">15</div>
-                             <div class="cal-cell cal-available">16</div><div class="cal-cell cal-available">17</div><div class="cal-cell cal-available">18</div><div class="cal-cell cal-reserved">19</div><div class="cal-cell cal-reserved">20</div><div class="cal-cell cal-available">21</div><div class="cal-cell cal-available">22</div>
-                             <div class="cal-cell cal-available">23</div><div class="cal-cell cal-available">24</div><div class="cal-cell cal-available">25</div><div class="cal-cell cal-available">26</div><div class="cal-cell cal-available">27</div><div class="cal-cell cal-available">28</div><div class="cal-cell cal-available">29</div>
-                             <div class="cal-cell cal-available">30</div><div class="cal-cell cal-past text-gray-300">1</div><div class="cal-cell cal-past text-gray-300">2</div><div class="cal-cell cal-past text-gray-300">3</div><div class="cal-cell cal-past text-gray-300">4</div><div class="cal-cell cal-past text-gray-300">5</div><div class="cal-cell cal-past text-gray-300">6</div>
+                        <div class="grid grid-cols-7 gap-2 justify-items-center text-gray-700" id="calendar-grid">
+                            <div class="cal-cell cal-past">26</div><div class="cal-cell cal-past">27</div><div class="cal-cell cal-past">28</div><div class="cal-cell cal-past">29</div><div class="cal-cell cal-past">30</div><div class="cal-cell cal-past">31</div>
+                            <div class="cal-cell cal-available" data-day="1">1</div>
+                            <div class="cal-cell cal-available" data-day="2">2</div><div class="cal-cell cal-available" data-day="3">3</div><div class="cal-cell cal-available" data-day="4">4</div><div class="cal-cell cal-available" data-day="5">5</div><div class="cal-cell cal-available" data-day="6">6</div><div class="cal-cell cal-available" data-day="7">7</div><div class="cal-cell cal-available" data-day="8">8</div>
+                            <div class="cal-cell cal-available" data-day="9">9</div><div class="cal-cell cal-available" data-day="10">10</div><div class="cal-cell cal-available" data-day="11">11</div>
+                            <div class="cal-cell cal-available" data-day="12">12</div> <div class="cal-cell cal-available" data-day="13">13</div><div class="cal-cell cal-available" data-day="14">14</div><div class="cal-cell cal-available" data-day="15">15</div>
+                             <div class="cal-cell cal-available" data-day="16">16</div><div class="cal-cell cal-available" data-day="17">17</div><div class="cal-cell cal-available" data-day="18">18</div><div class="cal-cell cal-reserved">19</div><div class="cal-cell cal-reserved">20</div><div class="cal-cell cal-available" data-day="21">21</div><div class="cal-cell cal-available" data-day="22">22</div>
+                             <div class="cal-cell cal-available" data-day="23">23</div><div class="cal-cell cal-available" data-day="24">24</div><div class="cal-cell cal-available" data-day="25">25</div><div class="cal-cell cal-available" data-day="26">26</div><div class="cal-cell cal-available" data-day="27">27</div><div class="cal-cell cal-available" data-day="28">28</div><div class="cal-cell cal-available" data-day="29">29</div>
+                             <div class="cal-cell cal-available" data-day="30">30</div>
+                             <div class="cal-cell cal-past text-gray-300">1</div><div class="cal-cell cal-past text-gray-300">2</div><div class="cal-cell cal-past text-gray-300">3</div><div class="cal-cell cal-past text-gray-300">4</div><div class="cal-cell cal-past text-gray-300">5</div><div class="cal-cell cal-past text-gray-300">6</div>
                         </div>
 
                         <div class="flex flex-wrap justify-center gap-4 mt-6 text-xs text-gray-600">
@@ -135,14 +140,14 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100">
-                            <tr data-price="1500" data-unit="day">
+                            <tr data-price="5500" data-unit="day">
                                 <td class="p-4"><input type="checkbox" name="equipment" class="equipment-checkbox w-4 h-4 text-pgso-blue bg-gray-100 border-gray-300 rounded"></td>
                                 <td class="py-3 font-medium text-gray-900">Boxing Ring Paraphernalia</td>
                                 <td class="py-3">per day</td>
                                 <td class="py-3 text-gray-900">₱5,500</td>
                                 <td class="py-3"><input type="number" min="0" value="0" class="equipment-quantity form-input w-full rounded p-1 text-center" disabled></td>
                             </tr>
-                            <tr data-price="400" data-unit="hour">
+                            <tr data-price="100" data-unit="per_day_per_chair">
                                 <td class="p-4"><input type="checkbox" name="equipment" class="equipment-checkbox w-4 h-4 text-pgso-blue bg-gray-100 border-gray-300 rounded"></td>
                                 <td class="py-3 font-medium text-gray-900">Folding Tables</td>
                                 <td class="py-3">per table, per day</td>
@@ -153,52 +158,52 @@
                                 <td class="p-4"><input type="checkbox" name="equipment" class="equipment-checkbox w-4 h-4 text-pgso-blue bg-gray-100 border-gray-300 rounded"></td>
                                 <td class="py-3 font-medium text-gray-900">Monoblock Chairs</td>
                                 <td class="py-3">per chair, per day</td>
-                                <td class="py-3 text-gray-900">₱7.5</td>
+                                <td class="py-3 text-gray-900">₱7.50</td>
                                 <td class="py-3"><input type="number" min="0" value="0" class="equipment-quantity form-input w-full rounded p-1 text-center" disabled></td>
                             </tr>
-                            <tr data-price="7.5" data-unit="per_day_per_chair">
+                            <tr data-price="20" data-unit="per_day_per_chair">
                                 <td class="p-4"><input type="checkbox" name="equipment" class="equipment-checkbox w-4 h-4 text-pgso-blue bg-gray-100 border-gray-300 rounded"></td>
                                 <td class="py-3 font-medium text-gray-900">Monoblock Tables</td>
                                 <td class="py-3">per table, per day</td>
                                 <td class="py-3 text-gray-900">₱20</td>
                                 <td class="py-3"><input type="number" min="0" value="0" class="equipment-quantity form-input w-full rounded p-1 text-center" disabled></td>
                             </tr>
-                            <tr data-price="7.5" data-unit="per_day_per_chair">
+                            <tr data-price="500" data-unit="day">
                                 <td class="p-4"><input type="checkbox" name="equipment" class="equipment-checkbox w-4 h-4 text-pgso-blue bg-gray-100 border-gray-300 rounded"></td>
                                 <td class="py-3 font-medium text-gray-900">Parachute Tent</td>
                                 <td class="py-3">per day</td>
                                 <td class="py-3 text-gray-900">₱500</td>
                                 <td class="py-3"><input type="number" min="0" value="0" class="equipment-quantity form-input w-full rounded p-1 text-center" disabled></td>
                             </tr>
-                            <tr data-price="7.5" data-unit="per_day_per_chair">
+                            <tr data-price="1500" data-unit="day">
                                 <td class="p-4"><input type="checkbox" name="equipment" class="equipment-checkbox w-4 h-4 text-pgso-blue bg-gray-100 border-gray-300 rounded"></td>
                                 <td class="py-3 font-medium text-gray-900">Red Carpet</td>
                                 <td class="py-3">per day</td>
                                 <td class="py-3 text-gray-900">₱1,500</td>
                                 <td class="py-3"><input type="number" min="0" value="0" class="equipment-quantity form-input w-full rounded p-1 text-center" disabled></td>
                             </tr>
-                            <tr data-price="7.5" data-unit="per_day_per_chair">
+                            <tr data-price="200" data-unit="hour">
                                 <td class="p-4"><input type="checkbox" name="equipment" class="equipment-checkbox w-4 h-4 text-pgso-blue bg-gray-100 border-gray-300 rounded"></td>
-                                <td class="py-3 font-medium text-gray-900">Sound System: 2 microphones and 2 speakers</td>
+                                <td class="py-3 font-medium text-gray-900">Sound System</td>
                                 <td class="py-3">per hour</td>
                                 <td class="py-3 text-gray-900">₱200</td>
                                 <td class="py-3"><input type="number" min="0" value="0" class="equipment-quantity form-input w-full rounded p-1 text-center" disabled></td>
                             </tr>
-                        <tr data-price="7.5" data-unit="per_day_per_chair">
+                            <tr data-price="25" data-unit="hour">
                                 <td class="p-4"><input type="checkbox" name="equipment" class="equipment-checkbox w-4 h-4 text-pgso-blue bg-gray-100 border-gray-300 rounded"></td>
                                 <td class="py-3 font-medium text-gray-900">Microphones</td>
                                 <td class="py-3">per hour</td>
                                 <td class="py-3 text-gray-900">₱25</td>
                                 <td class="py-3"><input type="number" min="0" value="0" class="equipment-quantity form-input w-full rounded p-1 text-center" disabled></td>
                             </tr>
-                            <tr data-price="7.5" data-unit="per_day_per_chair">
+                            <tr data-price="70" data-unit="per_day_per_chair">
                                 <td class="p-4"><input type="checkbox" name="equipment" class="equipment-checkbox w-4 h-4 text-pgso-blue bg-gray-100 border-gray-300 rounded"></td>
                                 <td class="py-3 font-medium text-gray-900">Table Cloths</td>
                                 <td class="py-3">per cloth, per day</td>
                                 <td class="py-3 text-gray-900">₱70</td>
                                 <td class="py-3"><input type="number" min="0" value="0" class="equipment-quantity form-input w-full rounded p-1 text-center" disabled></td>
                             </tr>
-                            <tr data-price="7.5" data-unit="per_day_per_chair">
+                            <tr data-price="25" data-unit="per_day_per_chair">
                                 <td class="p-4"><input type="checkbox" name="equipment" class="equipment-checkbox w-4 h-4 text-pgso-blue bg-gray-100 border-gray-300 rounded"></td>
                                 <td class="py-3 font-medium text-gray-900">Table Runners</td>
                                 <td class="py-3">per cloth, per day</td>
@@ -217,8 +222,8 @@
 
                 <div class="bg-slate-100 rounded-lg p-6 mb-8">
                     <div class="flex justify-between text-sm mb-2 text-gray-700">
-                        <span>Venue Base Price:</span>
-                        <span id="base-price-display" class="font-medium">₱0</span>
+                        <span>Venue Base Price (<span id="hours-calculated-display">4 hrs</span>):</span>
+                        <span id="base-price-display" class="font-medium">₱1,500</span>
                     </div>
                     <div class="flex justify-between text-sm mb-2 text-gray-700">
                         <span>Total Days Reserved:</span>
@@ -229,7 +234,7 @@
                         <span id="equipment-cost-display" class="font-medium">₱0</span>
                     </div>
                     <div class="flex justify-between text-sm mb-2 text-gray-700">
-                        <span>Sub-Total (Venue x Days + Equip.):</span>
+                        <span>Sub-Total:</span>
                         <span id="subtotal-display" class="font-medium">₱0</span>
                     </div>
                     <div class="flex justify-between text-sm mb-4 text-gray-700 border-b border-gray-300 pb-4">
@@ -238,13 +243,13 @@
                     </div>
                     <div class="flex justify-between items-center">
                         <span class="text-xl font-bold text-gray-800">Estimated Total:</span>
-                        <span id="estimated-total-display" class="text-3xl font-bold text-pgso-blue">₱3,000</span>
+                        <span id="estimated-total-display" class="text-3xl font-bold text-pgso-blue">₱4,500</span>
                     </div>
-                    <p class="text-xs text-gray-500 mt-4">Note: Final pricing may vary based on actual hours and equipment usage. Contact PGSO for detailed quotes.</p>
+                    <p class="text-xs text-gray-500 mt-4">Note: Final pricing may vary based on actual hours and equipment usage.</p>
                 </div>
 
-                <button type="submit" class="w-full pgso-btn text-white font-bold py-4 rounded-lg text-lg transition shadow-md">
-                    View Reservation Summary
+                <button onclick="saveAndRedirect()" type="button" class="w-full pgso-btn text-white font-bold py-4 rounded-lg text-lg transition shadow-md">
+                View Reservation Summary
                 </button>
 
             </form>
@@ -255,254 +260,305 @@
         &copy; 2025 Provincial General Services Office. All rights reserved.
     </footer>
 
-<script>
-    // Constants for pricing
-    const SECURITY_DEPOSIT = 3000;
-    // Reserved dates (for demonstration) - Year-Month-Day
-    const RESERVED_DATES = [
-        '2025-11-19', 
-        '2025-11-20',
-        '2025-12-10' // Example in the next month
-    ];
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- VARIABLES & SELECTORS ---
+            const form = document.getElementById('reservation-form');
+            const checkboxes = document.querySelectorAll('.equipment-checkbox');
+            const quantityInputs = document.querySelectorAll('.equipment-quantity');
+            const durationRadios = document.querySelectorAll('input[name="duration"]');
+            const startTimeInput = document.getElementById('start-time');
+            const endTimeInput = document.getElementById('end-time');
+            const calendarCells = document.querySelectorAll('.cal-available');
+            const selectedDateInput = document.getElementById('selected-date-input');
 
-    // State variables
-    let selectedDates = [];
-    let currentMonth = new Date().getMonth();
-    let currentYear = new Date().getFullYear();
+            // Display Spans
+            const basePriceDisplay = document.getElementById('base-price-display');
+            const hoursCalculatedDisplay = document.getElementById('hours-calculated-display');
+            const daysReservedDisplay = document.getElementById('days-reserved-display');
+            const equipCostDisplay = document.getElementById('equipment-cost-display');
+            const subtotalDisplay = document.getElementById('subtotal-display');
+            const estimatedTotalDisplay = document.getElementById('estimated-total-display');
 
-    // DOM Elements
-    const calendarDaysEl = document.getElementById('calendar-days');
-    const currentMonthYearEl = document.getElementById('current-month-year');
-    const prevMonthBtn = document.getElementById('prev-month-btn');
-    const nextMonthBtn = document.getElementById('next-month-btn');
-    const selectedDaysCountEl = document.getElementById('selected-days-count');
+            let selectedDaysCount = 0; // Starts at 0, user must click
+            const securityDeposit = 3000;
 
-    // Price Elements
-    const venueSelect = document.getElementById('venue-select');
-    const equipmentCheckboxes = document.querySelectorAll('.equipment-checkbox');
-    const equipmentQuantities = document.querySelectorAll('.equipment-quantity');
-    const basePriceDisplay = document.getElementById('base-price-display');
-    const daysReservedDisplay = document.getElementById('days-reserved-display');
-    const equipmentCostDisplay = document.getElementById('equipment-cost-display');
-    const subtotalDisplay = document.getElementById('subtotal-display');
-    const estimatedTotalDisplay = document.getElementById('estimated-total-display');
-    const durationRadios = document.querySelectorAll('input[name="duration"]');
+            // --- 1. CALENDAR LOGIC ---
+            calendarCells.forEach(cell => {
+                cell.addEventListener('click', function() {
+                    // Visual Toggle for single date selection
+                    // Remove selected class from all
+                    calendarCells.forEach(c => c.classList.remove('cal-selected'));
+                    
+                    // Add to clicked
+                    this.classList.add('cal-selected');
+                    
+                    // Update state
+                    selectedDaysCount = 1;
+                    const day = this.getAttribute('data-day');
+                    selectedDateInput.value = `2025-11-${day.padStart(2, '0')}`;
+                    
+                    calculateTotal();
+                });
+            });
 
-    /**
-     * Helper function to format price as Philippine Peso (₱)
-     * @param {number} price
-     */
-    const formatPrice = (price) => {
-        return '₱' + price.toLocaleString('en-PH', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
-    }
+            // --- 2. EQUIPMENT LOGIC ---
+            checkboxes.forEach((checkbox, index) => {
+                checkbox.addEventListener('change', function() {
+                    const qtyInput = quantityInputs[index];
+                    if (this.checked) {
+                        qtyInput.disabled = false;
+                        qtyInput.value = 1; // Default to 1
+                        qtyInput.focus();
+                    } else {
+                        qtyInput.disabled = true;
+                        qtyInput.value = 0;
+                    }
+                    calculateTotal();
+                });
+            });
 
-    // --- Calendar Functionality ---
+            // Listen for quantity changes
+            quantityInputs.forEach(input => {
+                input.addEventListener('input', calculateTotal);
+            });
 
-    /**
-     * Checks if a given date is in the past.
-     * @param {Date} date - The date to check.
-     * @returns {boolean} - True if the date is in the past, false otherwise.
-     */
-    const isPastDate = (date) => {
-        const today = new Date();
-        // Set both dates to midnight to only compare day, month, and year
-        today.setHours(0, 0, 0, 0);
-        date.setHours(0, 0, 0, 0);
-        return date < today;
-    }
+            // --- 3. DURATION & TIME LOGIC ---
+            // Listen to any changes in time or duration radio buttons
+            const calculationTriggers = document.querySelectorAll('.calculation-trigger');
+            calculationTriggers.forEach(el => {
+                el.addEventListener('change', calculateTotal);
+                el.addEventListener('input', calculateTotal);
+            });
 
-    /**
-     * Renders the calendar days for the currentMonth and currentYear.
-     */
-    const renderCalendar = () => {
-        calendarDaysEl.innerHTML = '';
-        const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
-        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-        const startingDay = firstDayOfMonth.getDay(); // 0 (Sun) to 6 (Sat)
-        
-        // Update month/year title
-        currentMonthYearEl.textContent = firstDayOfMonth.toLocaleDateString('en-US', { 
-            year: 'numeric', 
-            month: 'long' 
-        });
+            // --- MAIN CALCULATION FUNCTION ---
+            function calculateTotal() {
+                // A. Get Base Duration Config
+                let selectedBaseDuration = 4;
+                durationRadios.forEach(r => {
+                    if (r.checked) selectedBaseDuration = parseInt(r.value);
+                });
 
-        // 1. Render blank cells for preceding days
-        for (let i = 0; i < startingDay; i++) {
-            const prevMonthDay = new Date(currentYear, currentMonth, 0).getDate() - startingDay + i + 1;
-            calendarDaysEl.innerHTML += `<div class="cal-cell cal-past">${prevMonthDay}</div>`;
-        }
+                // B. Calculate Actual Time Difference
+                let calculatedHours = selectedBaseDuration; // Default to radio selection
+                let extraCharge = 0;
 
-        // 2. Render actual days
-        for (let day = 1; day <= daysInMonth; day++) {
-            const date = new Date(currentYear, currentMonth, day);
-            const dateString = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-            
-            let className = 'cal-available date-cell';
-            let isClickable = true;
+                if (startTimeInput.value && endTimeInput.value) {
+                    const start = new Date(`1970-01-01T${startTimeInput.value}:00`);
+                    const end = new Date(`1970-01-01T${endTimeInput.value}:00`);
+                    
+                    // Handle overnight or simple diff
+                    let diffMs = end - start;
+                    if (diffMs < 0) diffMs += 24 * 60 * 60 * 1000; // end time is next day? (assuming same day for now)
+                    
+                    const diffHours = diffMs / (1000 * 60 * 60);
+                    
+                    // If user input specific times, use that for equipment hourly calc
+                    if(diffHours > 0) calculatedHours = diffHours;
 
-            if (isPastDate(date)) {
-                className = 'cal-past';
-                isClickable = false;
-            } else if (RESERVED_DATES.includes(dateString)) {
-                className = 'cal-reserved';
-                isClickable = false;
-            } else if (selectedDates.includes(dateString)) {
-                className = 'cal-selected date-cell';
-            } else {
-                 className = 'cal-available date-cell';
-            }
-
-            const cell = document.createElement('div');
-            cell.classList.add('cal-cell', ...className.split(' '));
-            cell.textContent = day;
-            cell.dataset.date = dateString;
-            cell.dataset.clickable = isClickable;
-
-            if (isClickable) {
-                cell.addEventListener('click', toggleDateSelection);
-            }
-
-            calendarDaysEl.appendChild(cell);
-        }
-        
-        // 3. Render next month's filler days (up to 42 total cells)
-        const totalCells = startingDay + daysInMonth;
-        const fillerDays = 42 - totalCells; // Maximum cells to prevent layout shift
-        for (let i = 1; i <= fillerDays; i++) {
-            calendarDaysEl.innerHTML += `<div class="cal-cell cal-past text-gray-300">${i}</div>`;
-        }
-    };
-
-    /**
-     * Toggles the selection state of a date cell.
-     * @param {Event} event - The click event.
-     */
-    const toggleDateSelection = (event) => {
-        const cell = event.currentTarget;
-        const date = cell.dataset.date;
-
-        if (cell.classList.contains('cal-selected')) {
-            // Deselect
-            cell.classList.remove('cal-selected');
-            cell.classList.add('cal-available');
-            selectedDates = selectedDates.filter(d => d !== date);
-        } else if (cell.dataset.clickable === 'true') {
-            // Select
-            cell.classList.add('cal-selected');
-            cell.classList.remove('cal-available');
-            selectedDates.push(date);
-        }
-
-        selectedDaysCountEl.textContent = selectedDates.length;
-        calculateTotal();
-    };
-
-    // Navigation buttons
-    prevMonthBtn.addEventListener('click', () => {
-        currentMonth--;
-        if (currentMonth < 0) {
-            currentMonth = 11;
-            currentYear--;
-        }
-        renderCalendar();
-    });
-
-    nextMonthBtn.addEventListener('click', () => {
-        currentMonth++;
-        if (currentMonth > 11) {
-            currentMonth = 0;
-            currentYear++;
-        }
-        renderCalendar();
-    });
-
-    // --- Price Calculation Functionality ---
-
-    /**
-     * Calculates the total cost of all selected elements (Venue, Days, Equipment).
-     */
-    const calculateTotal = () => {
-        // 1. Get Venue Base Price
-        const selectedVenueOption = venueSelect.options[venueSelect.selectedIndex];
-        const venueBasePrice = parseFloat(selectedVenueOption.dataset.price) || 0;
-
-        // 2. Get Number of Days
-        const numberOfDays = selectedDates.length;
-        daysReservedDisplay.textContent = `${numberOfDays} day${numberOfDays !== 1 ? 's' : ''}`;
-
-        // 3. Calculate Base Cost (Venue x Days)
-        let venueCost = venueBasePrice * numberOfDays;
-        basePriceDisplay.textContent = formatPrice(venueBasePrice);
-
-        // 4. Calculate Equipment Cost
-        let equipmentCost = 0;
-        equipmentCheckboxes.forEach((checkbox, index) => {
-            const quantityInput = equipmentQuantities[index];
-            const row = checkbox.closest('tr');
-            const pricePerUnit = parseFloat(row.dataset.price);
-            const unitType = row.dataset.unit;
-            let quantity = parseInt(quantityInput.value) || 0;
-
-            if (checkbox.checked) {
-                // Determine if quantity is days, hours, or units per day
-                let effectiveQuantity = quantity;
-                if (unitType === 'day' || unitType === 'per_day_per_chair') {
-                    // Cost is per day, so multiply by days reserved
-                    effectiveQuantity = quantity * numberOfDays; 
-                } else if (unitType === 'hour') {
-                    // For hour-based items, we need a duration radio check (simplification)
-                    const selectedDurationRadio = document.querySelector('input[name="duration"]:checked');
-                    const durationHours = selectedDurationRadio ? parseInt(selectedDurationRadio.dataset.durationValue) : 1; 
-                    effectiveQuantity = quantity * durationHours;
+                    // Overage Logic for 4-hour package
+                    if (selectedBaseDuration === 4 && diffHours > 4) {
+                        const excessHours = Math.ceil(diffHours - 4); // "Or fraction thereof" -> Math.ceil
+                        extraCharge = excessHours * 400;
+                    }
                 }
+
+                // C. Venue Cost
+                let venueBaseCost = (selectedBaseDuration === 4) ? 1500 : 2500;
+                let totalVenueCost = venueBaseCost + extraCharge;
                 
-                equipmentCost += pricePerUnit * effectiveQuantity;
+                // If 0 days selected, venue cost is effectively 0 for the Total, 
+                // but we usually show the rate. Let's multiply by days.
+                let finalVenueCost = totalVenueCost * (selectedDaysCount > 0 ? selectedDaysCount : 0);
+
+                // D. Equipment Cost
+                let totalEquipCost = 0;
+                const rows = document.querySelectorAll('#equipment-table tbody tr');
+                
+                rows.forEach((row) => {
+                    const checkbox = row.querySelector('.equipment-checkbox');
+                    const qtyInput = row.querySelector('.equipment-quantity');
+                    
+                    if (checkbox.checked) {
+                        const price = parseFloat(row.getAttribute('data-price'));
+                        const unit = row.getAttribute('data-unit'); // 'day', 'hour', or 'per_day_per_chair'
+                        const qty = parseInt(qtyInput.value) || 0;
+                        
+                        let itemCost = 0;
+                        
+                        if (unit === 'hour') {
+                            // Price * Qty * Hours (calculated from time inputs)
+                            // We use Math.ceil for hours because you usually pay for the full hour started
+                            const billingHours = Math.ceil(calculatedHours); 
+                            itemCost = price * qty * billingHours;
+                        } else {
+                            // 'day' or 'per_day_per_chair' -> Price * Qty
+                            itemCost = price * qty;
+                        }
+                        
+                        // Multiply by days reserved
+                        // If days is 0 (no selection), we assume 1 for pricing preview, 
+                        // OR strictly 0. Let's do strictly * days if selected, else * 1 for preview?
+                        // Better to stick to strict totals.
+                        itemCost = itemCost * (selectedDaysCount > 0 ? selectedDaysCount : 0);
+                        
+                        totalEquipCost += itemCost;
+                    }
+                });
+
+                // E. Final Totals
+                const subTotal = finalVenueCost + totalEquipCost;
+                // Only add security deposit if a reservation is actually happening (days > 0)
+                const grandTotal = (selectedDaysCount > 0) ? (subTotal + securityDeposit) : 3000; 
+
+                // --- UI UPDATES ---
+                // Format numbers to currency
+                const fmt = (num) => '₱' + num.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 2});
+
+                hoursCalculatedDisplay.textContent = Math.ceil(calculatedHours) + " hrs";
+                basePriceDisplay.textContent = (extraCharge > 0) 
+                    ? `${fmt(venueBaseCost)} + ${fmt(extraCharge)} (overage)` 
+                    : fmt(venueBaseCost);
+                
+                daysReservedDisplay.textContent = selectedDaysCount + " days";
+                equipCostDisplay.textContent = fmt(totalEquipCost);
+                subtotalDisplay.textContent = fmt(subTotal);
+                estimatedTotalDisplay.textContent = fmt(grandTotal);
             }
-        });
-        
-        equipmentCostDisplay.textContent = formatPrice(equipmentCost);
 
-        // 5. Calculate Subtotal and Total
-        const subtotal = venueCost + equipmentCost;
-        const estimatedTotal = subtotal + SECURITY_DEPOSIT;
+            // Initial run to set zeros
+            calculateTotal();
 
-        subtotalDisplay.textContent = formatPrice(subtotal);
-        estimatedTotalDisplay.textContent = formatPrice(estimatedTotal);
+            // --- Function to SAVE data to Local Storage and redirect ---
+
+            function saveAndRedirect() {
+                function saveAndRedirect() {
+                    console.log("Function called, redirecting..."); // Check your browser console for this
+
+                 // **This is the ONLY line required to navigate**
+                window.location.href = 'summary.html'; 
+}
+        // 1. Collect all non-calculated input fields
+        const contactInfo = {
+        fullName: document.querySelector('input[placeholder=""]').value, // Assuming the first is name
+        contactNumber: document.querySelector('input[type="text"]:nth-child(2)').value, // Assuming the second is contact number
+        email: document.querySelector('input[type="email"]').value,
     };
 
-    // --- Event Listeners ---
+    const eventDetails = {
+        venue: 'PCL Hall', // Hardcoded from the HTML context
+        eventType: document.querySelector('input[placeholder*="Wedding"]').value,
+        date: document.getElementById('selected-date-input').value, // From calendar logic
+        startTime: document.getElementById('start-time').value,
+        endTime: document.getElementById('end-time').value,
+        durationText: document.querySelector('input[name="duration"]:checked').nextElementSibling.textContent.split('(')[0].trim(),
+    };
+    
+    const notes = document.querySelector('textarea').value;
 
-    // Venue change listener
-    venueSelect.addEventListener('change', calculateTotal);
+    // 2. Collect calculated Equipment data
+    let equipmentData = [];
+    let totalEquipmentCost = 0;
+    const rows = document.querySelectorAll('#equipment-table tbody tr');
 
-    // Equipment checkbox and quantity listeners
-    equipmentCheckboxes.forEach((checkbox, index) => {
-        const quantityInput = equipmentQuantities[index];
+    rows.forEach((row) => {
+        const checkbox = row.querySelector('.equipment-checkbox');
+        const qtyInput = row.querySelector('.equipment-quantity');
         
-        // Toggle quantity input on checkbox change
-        checkbox.addEventListener('change', () => {
-            quantityInput.disabled = !checkbox.checked;
-            quantityInput.value = checkbox.checked ? 1 : 0; // Set to 1 if checked, 0 if unchecked
-            calculateTotal();
+        if (checkbox.checked && parseInt(qtyInput.value) > 0) {
+            const price = parseFloat(row.getAttribute('data-price'));
+            const unit = row.querySelector('td:nth-child(3)').textContent.trim();
+            const name = row.querySelector('td:nth-child(2)').textContent.trim();
+            const qty = parseInt(qtyInput.value);
+
+            // Recalculate cost for summary consistency
+            // NOTE: You would need the calculated hours here if any items are hourly.
+            // For simplicity, we assume we use the calculated values already shown in the UI.
+            // A quick re-calculation ensures data integrity:
+            
+            // Placeholder: Call calculateTotal to ensure all pricing spans are up to date
+            // Assuming calculateTotal() from the previous response runs successfully:
+            // calculateTotal(); 
+            
+            // Calculate item subtotal based on simple unit model for summary:
+            // This is a simplified calculation for storage; a full implementation 
+            // would need to replicate the exact hourly/daily logic here.
+            
+            // For now, let's pull the total cost values from the display spans:
+            // It's safer to rely on the current total costs if they are accurate.
+            
+            // Since `calculateTotal` is complex, we'll store the item details
+            // and rely on the UI to calculate and update the total cost spans
+            // which we'll pull into the `pricing` object.
+
+            // To calculate the subtotal exactly, you'll need the duration (in hours) here again:
+            let calculatedHours = 4; // default
+            if (document.getElementById('start-time').value && document.getElementById('end-time').value) {
+                 const start = new Date(`1970-01-01T${document.getElementById('start-time').value}:00`);
+                 const end = new Date(`1970-01-01T${document.getElementById('end-time').value}:00`);
+                 let diffMs = end - start;
+                 if (diffMs < 0) diffMs += 24 * 60 * 60 * 1000;
+                 calculatedHours = diffMs / (1000 * 60 * 60);
+            }
+            const billingHours = Math.ceil(calculatedHours); 
+            const daysCount = 1; // Assuming 1 day for simplicity of summary transfer
+
+            let itemCost = price * qty * (unit.includes('hour') ? billingHours : daysCount);
+            
+            equipmentData.push({
+                name: name,
+                qty: qty,
+                unit: unit,
+                unitPrice: price,
+                subtotal: itemCost 
+            });
+            totalEquipmentCost += itemCost;
+        }
+    });
+
+
+    // 3. Collect Calculated Pricing (Requires calculateTotal() to run first!)
+    // If you implemented the previous JavaScript correctly, calculateTotal() updates these:
+    const basePriceText = document.getElementById('base-price-display').textContent.replace(/[₱,]/g, '').trim();
+    const equipmentCostText = document.getElementById('equipment-cost-display').textContent.replace(/[₱,]/g, '').trim();
+    const totalAmountText = document.getElementById('estimated-total-display').textContent.replace(/[₱,]/g, '').trim();
+    
+    // Attempt to parse out base cost and overage from the display
+    let venueBasePrice = 0;
+    let venueOverage = 0;
+    if (basePriceText.includes('+')) {
+        const parts = basePriceText.split('+').map(p => parseFloat(p.trim().split('(')[0]));
+        venueBasePrice = parts[0] || 0;
+        venueOverage = parts[1] || 0;
+    } else {
+        venueBasePrice = parseFloat(basePriceText) || 0;
+    }
+    
+    // Use the values from the display, which were calculated by the script
+    const pricingData = {
+        venueBasePrice: venueBasePrice,
+        venueOverage: venueOverage,
+        totalEquipmentCost: parseFloat(equipmentCostText) || 0,
+        // The total amount includes the 3000 deposit
+        totalAmount: parseFloat(totalAmountText) || 3000, 
+    };
+
+    // 4. Combine and Save Data
+    const fullReservationData = {
+        contact: contactInfo,
+        event: eventDetails,
+        notes: notes,
+        equipment: equipmentData,
+        pricing: pricingData,
+    };
+    
+    // Save to Local Storage
+    localStorage.setItem('pgsoReservationData', JSON.stringify(fullReservationData));
+    
+    // Redirect to summary page
+    window.location.href = 'summary.html';
+}
         });
-
-        // Recalculate on quantity change
-        quantityInput.addEventListener('input', calculateTotal);
-        quantityInput.addEventListener('change', calculateTotal);
-    });
-
-    // Duration radio listeners (affects hour-based equipment)
-    durationRadios.forEach(radio => {
-        radio.addEventListener('change', calculateTotal);
-    });
-
-
-    // Initial setup
-    document.addEventListener('DOMContentLoaded', () => {
-        renderCalendar();
-        calculateTotal(); // Initial calculation
-    });
-</script>
-
-</body>
+    </script>
+    </body>
 </html>

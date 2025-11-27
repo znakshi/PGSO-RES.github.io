@@ -12,12 +12,14 @@
         .pgso-blue { background-color: #3c5473; }
         .pgso-btn { background-color: #3c5473; }
         .pgso-btn:hover { background-color: #2c3e50; }
-        /* Custom style for form inputs to match screenshot gray */
+        
+        /* Form Inputs */
         .form-input { background-color: #f3f4f6; border: none; }
         .form-input:focus { background-color: #ffffff; box-shadow: 0 0 0 2px #e5e7eb; }
-        /* Calendar styles */
-        .cal-cell { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
-        .cal-past { color: #d1d5db; cursor: not-allowed; }
+        
+        /* Calendar Styles */
+        .cal-cell { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; user-select: none; }
+        .cal-past { color: #d1d5db; cursor: not-allowed; pointer-events: none; } /* Grayed out & Unclickable */
         .cal-reserved { background-color: #e5e7eb; color: #9ca3af; text-decoration: line-through; cursor: not-allowed; }
         .cal-selected { background-color: #3c5473; color: white; font-weight: bold; }
         .cal-available:hover { background-color: #f3f4f6; cursor: pointer; }
@@ -75,9 +77,9 @@
                     </div>
                     <div class="flex items-center">
                         <input id="duration-8" name="duration" type="radio" class="w-4 h-4 text-pgso-blue bg-gray-100 border-gray-300" data-duration-value="8">
-                        <label for="duration-8" class="ml-3 font-bold text-gray-800">8 hours (3,000)</label>
+                        <label for="duration-8" class="ml-3 font-bold text-gray-800">8 hours (₱3,000)</label>
                     </div>
-
+                </div>
                 <p class="text-s text-gray-500 mb-8">₱575 for every additional hour or a fraction thereof</p>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
@@ -95,25 +97,19 @@
                      <label class="block text-sm font-bold mb-4">Select Date *</label>
                      <div class="border border-gray-100 rounded-xl p-6 max-w-md mx-auto">
                         <div class="flex justify-between items-center mb-6">
-                            <button type="button" class="text-gray-800 hover:bg-gray-100 p-2 rounded-full"><i class="fa-solid fa-chevron-left"></i></button>
-                            <h4 class="text-lg font-bold">November 2025</h4>
-                            <button type="button" class="text-gray-800 hover:bg-gray-100 p-2 rounded-full"><i class="fa-solid fa-chevron-right"></i></button>
+                            <button type="button" id="prevMonth" class="text-gray-800 hover:bg-gray-100 p-2 rounded-full"><i class="fa-solid fa-chevron-left"></i></button>
+                            <h4 id="currentMonthYear" class="text-lg font-bold">Month Year</h4>
+                            <button type="button" id="nextMonth" class="text-gray-800 hover:bg-gray-100 p-2 rounded-full"><i class="fa-solid fa-chevron-right"></i></button>
                         </div>
                         
                         <div class="grid grid-cols-7 gap-2 text-center mb-4 font-bold text-gray-800">
                             <div>Su</div><div>Mo</div><div>Tu</div><div>We</div><div>Th</div><div>Fr</div><div>Sa</div>
                         </div>
-                        <div class="grid grid-cols-7 gap-2 justify-items-center text-gray-700">
-                            <div class="cal-cell cal-past">26</div><div class="cal-cell cal-past">27</div><div class="cal-cell cal-past">28</div><div class="cal-cell cal-past">29</div><div class="cal-cell cal-past">30</div><div class="cal-cell cal-past">31</div><div class="cal-cell cal-available">1</div>
-                            <div class="cal-cell cal-available">2</div><div class="cal-cell cal-available">3</div><div class="cal-cell cal-available">4</div><div class="cal-cell cal-available">5</div><div class="cal-cell cal-available">6</div><div class="cal-cell cal-available">7</div><div class="cal-cell cal-available">8</div>
-                            <div class="cal-cell cal-available">9</div><div class="cal-cell cal-available">10</div><div class="cal-cell cal-available">11</div><div class="cal-cell cal-selected">12</div><div class="cal-cell cal-available">13</div><div class="cal-cell cal-available">14</div><div class="cal-cell cal-available">15</div>
-                             <div class="cal-cell cal-available">16</div><div class="cal-cell cal-available">17</div><div class="cal-cell cal-available">18</div><div class="cal-cell cal-reserved">19</div><div class="cal-cell cal-reserved">20</div><div class="cal-cell cal-available">21</div><div class="cal-cell cal-available">22</div>
-                             <div class="cal-cell cal-available">23</div><div class="cal-cell cal-available">24</div><div class="cal-cell cal-available">25</div><div class="cal-cell cal-available">26</div><div class="cal-cell cal-available">27</div><div class="cal-cell cal-available">28</div><div class="cal-cell cal-available">29</div>
-                             <div class="cal-cell cal-available">30</div><div class="cal-cell cal-past text-gray-300">1</div><div class="cal-cell cal-past text-gray-300">2</div><div class="cal-cell cal-past text-gray-300">3</div><div class="cal-cell cal-past text-gray-300">4</div><div class="cal-cell cal-past text-gray-300">5</div><div class="cal-cell cal-past text-gray-300">6</div>
-                        </div>
+                        
+                        <div id="calendar-grid" class="grid grid-cols-7 gap-2 justify-items-center text-gray-700"></div>
 
                         <div class="flex flex-wrap justify-center gap-4 mt-6 text-xs text-gray-600">
-                            <div class="flex items-center"><div class="w-4 h-4 rounded-md bg-pgso-blue mr-2"></div> Selected Date</div>
+                            <div class="flex items-center"><div class="w-4 h-4 rounded-md bg-pgso-blue mr-2"></div> Selected</div>
                             <div class="flex items-center"><div class="w-4 h-4 rounded-md bg-gray-200 mr-2 flex justify-center items-center text-gray-400 text-[10px]"><i class="fa-solid fa-xmark"></i></div> Reserved</div>
                             <div class="flex items-center"><div class="w-4 h-4 rounded-md text-gray-300 mr-2 flex justify-center items-center text-[10px]"><i class="fa-solid fa-xmark"></i></div> Past Date</div>
                             <div class="flex items-center"><div class="w-4 h-4 rounded-md border border-gray-200 mr-2"></div> Available</div>
@@ -123,7 +119,7 @@
 
                 <h3 class="text-lg font-bold mb-4">Additional Services</h3>
                 <div class="overflow-x-auto mb-8">
-                    <table class="min-w-full text-sm text-left text-gray-500" id="equipment-table">
+                    <table class="min-w-full text-sm text-left text-gray-500">
                         <thead class="text-xs text-gray-700 uppercase border-b">
                             <tr>
                                 <th scope="col" class="p-4">Select</th>
@@ -135,47 +131,43 @@
                         </thead>
                         <td colspan="5" class="py-1 px-4 text-black font-medium">Use of Sound System (4 hours minimum)</td>
                         <tbody class="divide-y divide-gray-100">
-                            <tr data-price="1500" data-unit="day">
+                            <tr data-price="200" data-unit="hour">
                                 <td class="p-4"><input type="checkbox" name="equipment" class="equipment-checkbox w-4 h-4 text-pgso-blue bg-gray-100 border-gray-300 rounded"></td>
                                 <td class="py-3 font-medium text-gray-900 italic">Set 1: two (2) microphones with two (2) speakers</td>
-                                <td class="py-3">per hour</td>
-                                <td class="py-3 text-gray-900">₱200</td>
+                                <td class="py-3">per hour</td><td class="py-3 text-gray-900">₱200</td>
                                 <td class="py-3"><input type="number" min="0" value="0" class="equipment-quantity form-input w-full rounded p-1 text-center" disabled></td>
                             </tr>
                             <tr data-price="400" data-unit="hour">
                                 <td class="p-4"><input type="checkbox" name="equipment" class="equipment-checkbox w-4 h-4 text-pgso-blue bg-gray-100 border-gray-300 rounded"></td>
                                 <td class="py-3 font-medium text-gray-900 italic">Set 2: four (4) microphones with six (6) speakers</td>
-                                <td class="py-3">per hour</td>
-                                <td class="py-3 text-gray-900">₱400</td>
+                                <td class="py-3">per hour</td><td class="py-3 text-gray-900">₱400</td>
                                 <td class="py-3"><input type="number" min="0" value="0" class="equipment-quantity form-input w-full rounded p-1 text-center" disabled></td>
                             </tr>
-                            <tr data-price="7.5" data-unit="per_day_per_chair">
+                            <tr data-price="200" data-unit="hour">
                                 <td class="p-4"><input type="checkbox" name="equipment" class="equipment-checkbox w-4 h-4 text-pgso-blue bg-gray-100 border-gray-300 rounded"></td>
                                 <td class="py-3 font-medium text-gray-900">Use of Projector (4hrs minimum)</td>
-                                <td class="py-3">per hour (max. of 8 hours)</td>
-                                <td class="py-3 text-gray-900">₱200</td>
+                                <td class="py-3">per hour (max. 8)</td><td class="py-3 text-gray-900">₱200</td>
                                 <td class="py-3"><input type="number" min="0" value="0" class="equipment-quantity form-input w-full rounded p-1 text-center" disabled></td>
                             </tr>
-                            <tr data-price="7.5" data-unit="per_day_per_chair">
+                            <tr data-price="10000" data-unit="day">
                                 <td class="p-4"><input type="checkbox" name="equipment" class="equipment-checkbox w-4 h-4 text-pgso-blue bg-gray-100 border-gray-300 rounded"></td>
                                 <td class="py-3 font-medium text-gray-900">Use of LED Wall</td>
-                                <td class="py-3">per day</td>
-                                <td class="py-3 text-gray-900">₱10,000</td>
+                                <td class="py-3">per day</td><td class="py-3 text-gray-900">₱10,000</td>
                                 <td class="py-3"><input type="number" min="0" value="0" class="equipment-quantity form-input w-full rounded p-1 text-center" disabled></td>
                             </tr>
-                            <tr data-price="7.5" data-unit="per_day_per_chair">
+                            <tr data-price="1500" data-unit="day">
                                 <td class="p-4"><input type="checkbox" name="equipment" class="equipment-checkbox w-4 h-4 text-pgso-blue bg-gray-100 border-gray-300 rounded"></td>
-                                <td class="py-3 font-medium text-gray-900">Use of Lighting System(Stage Lightnings)</td>
-                                <td class="py-3">per day</td>
-                                <td class="py-3 text-gray-900">₱1,500</td>
+                                <td class="py-3 font-medium text-gray-900">Use of Lighting System</td>
+                                <td class="py-3">per day</td><td class="py-3 text-gray-900">₱1,500</td>
                                 <td class="py-3"><input type="number" min="0" value="0" class="equipment-quantity form-input w-full rounded p-1 text-center" disabled></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
 
                 <h3 class="text-lg font-bold mb-4">Packages</h3>
                 <div class="overflow-x-auto mb-8">
-                    <table class="min-w-full text-sm text-left text-gray-500" id="equipment-table">
+                    <table class="min-w-full text-sm text-left text-gray-500">
                         <thead class="text-xs text-gray-700 uppercase border-b">
                             <tr>
                                 <th scope="col" class="p-4">Select</th>
@@ -186,40 +178,37 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100">
-                            <tr data-price="1500" data-unit="day">
+                            <tr data-price="15500" data-unit="day">
                                 <td class="p-4"><input type="checkbox" name="equipment" class="equipment-checkbox w-4 h-4 text-pgso-blue bg-gray-100 border-gray-300 rounded"></td>
-                                <td class="py-3 font-medium text-gray-900">Package 1: Hall, Sound System-Set 1, LED Wall, Lighting System</td>
-                                <td class="py-3">per day</td>
-                                <td class="py-3 text-gray-900">₱15,500</td>
+                                <td class="py-3 font-medium text-gray-900">Package 1: Hall, Sound-Set 1, LED Wall, Lights</td>
+                                <td class="py-3">per day</td><td class="py-3 text-gray-900">₱15,500</td>
                                 <td class="py-3"><input type="number" min="0" value="0" class="equipment-quantity form-input w-full rounded p-1 text-center" disabled></td>
                             </tr>
-                            <tr data-price="400" data-unit="hour">
+                            <tr data-price="17500" data-unit="day">
                                 <td class="p-4"><input type="checkbox" name="equipment" class="equipment-checkbox w-4 h-4 text-pgso-blue bg-gray-100 border-gray-300 rounded"></td>
-                                <td class="py-3 font-medium text-gray-900">Package 2: Hall, Sound System-Set 2, LED Wall, Lighting System</td>
-                                <td class="py-3">per day</td>
-                                <td class="py-3 text-gray-900">₱17,500</td>
+                                <td class="py-3 font-medium text-gray-900">Package 2: Hall, Sound-Set 2, LED Wall, Lights</td>
+                                <td class="py-3">per day</td><td class="py-3 text-gray-900">₱17,500</td>
                                 <td class="py-3"><input type="number" min="0" value="0" class="equipment-quantity form-input w-full rounded p-1 text-center" disabled></td>
                             </tr>
-                            <tr data-price="7.5" data-unit="per_day_per_chair">
+                            <tr data-price="5000" data-unit="day">
                                 <td class="p-4"><input type="checkbox" name="equipment" class="equipment-checkbox w-4 h-4 text-pgso-blue bg-gray-100 border-gray-300 rounded"></td>
-                                <td class="py-3 font-medium text-gray-900">Package 3: Hall, Sound System-Set 1, Projector</td>
-                                <td class="py-3">per day</td>
-                                <td class="py-3 text-gray-900">₱5,000</td>
+                                <td class="py-3 font-medium text-gray-900">Package 3: Hall, Sound-Set 1, Projector</td>
+                                <td class="py-3">per day</td><td class="py-3 text-gray-900">₱5,000</td>
                                 <td class="py-3"><input type="number" min="0" value="0" class="equipment-quantity form-input w-full rounded p-1 text-center" disabled></td>
                             </tr>
-                            <tr data-price="7.5" data-unit="per_day_per_chair">
+                            <tr data-price="6500" data-unit="day">
                                 <td class="p-4"><input type="checkbox" name="equipment" class="equipment-checkbox w-4 h-4 text-pgso-blue bg-gray-100 border-gray-300 rounded"></td>
-                                <td class="py-3 font-medium text-gray-900">Package 4: Hall, Sound System-Set 2, Projector</td>
-                                <td class="py-3">per day</td>
-                                <td class="py-3 text-gray-900">₱6,500</td>
+                                <td class="py-3 font-medium text-gray-900">Package 4: Hall, Sound-Set 2, Projector</td>
+                                <td class="py-3">per day</td><td class="py-3 text-gray-900">₱6,500</td>
                                 <td class="py-3"><input type="number" min="0" value="0" class="equipment-quantity form-input w-full rounded p-1 text-center" disabled></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
 
                 <h3 class="text-lg font-bold mb-4">Other Equipment</h3>
                 <div class="overflow-x-auto mb-8">
-                    <table class="min-w-full text-sm text-left text-gray-500" id="equipment-table">
+                    <table class="min-w-full text-sm text-left text-gray-500">
                         <thead class="text-xs text-gray-700 uppercase border-b">
                             <tr>
                                 <th scope="col" class="p-4">Select</th>
@@ -230,77 +219,15 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100">
-                            <tr data-price="1500" data-unit="day">
-                                
-                                <td class="p-4"><input type="checkbox" name="equipment" class="equipment-checkbox w-4 h-4 text-pgso-blue bg-gray-100 border-gray-300 rounded"></td>
-                                <td class="py-3 font-medium text-gray-900">Boxing Ring Paraphernalia</td>
-                                <td class="py-3">per day</td>
-                                <td class="py-3 text-gray-900">₱5,500</td>
-                                <td class="py-3"><input type="number" min="0" value="0" class="equipment-quantity form-input w-full rounded p-1 text-center" disabled></td>
-                            </tr>
-                            <tr data-price="400" data-unit="hour">
-                                <td class="p-4"><input type="checkbox" name="equipment" class="equipment-checkbox w-4 h-4 text-pgso-blue bg-gray-100 border-gray-300 rounded"></td>
-                                <td class="py-3 font-medium text-gray-900">Folding Tables</td>
-                                <td class="py-3">per table, per day</td>
-                                <td class="py-3 text-gray-900">₱100</td>
-                                <td class="py-3"><input type="number" min="0" value="0" class="equipment-quantity form-input w-full rounded p-1 text-center" disabled></td>
-                            </tr>
-                            <tr data-price="7.5" data-unit="per_day_per_chair">
-                                <td class="p-4"><input type="checkbox" name="equipment" class="equipment-checkbox w-4 h-4 text-pgso-blue bg-gray-100 border-gray-300 rounded"></td>
-                                <td class="py-3 font-medium text-gray-900">Monoblock Chairs</td>
-                                <td class="py-3">per chair, per day</td>
-                                <td class="py-3 text-gray-900">₱7.5</td>
-                                <td class="py-3"><input type="number" min="0" value="0" class="equipment-quantity form-input w-full rounded p-1 text-center" disabled></td>
-                            </tr>
-                            <tr data-price="7.5" data-unit="per_day_per_chair">
-                                <td class="p-4"><input type="checkbox" name="equipment" class="equipment-checkbox w-4 h-4 text-pgso-blue bg-gray-100 border-gray-300 rounded"></td>
-                                <td class="py-3 font-medium text-gray-900">Monoblock Tables</td>
-                                <td class="py-3">per table, per day</td>
-                                <td class="py-3 text-gray-900">₱20</td>
-                                <td class="py-3"><input type="number" min="0" value="0" class="equipment-quantity form-input w-full rounded p-1 text-center" disabled></td>
-                            </tr>
-                            <tr data-price="7.5" data-unit="per_day_per_chair">
-                                <td class="p-4"><input type="checkbox" name="equipment" class="equipment-checkbox w-4 h-4 text-pgso-blue bg-gray-100 border-gray-300 rounded"></td>
-                                <td class="py-3 font-medium text-gray-900">Parachute Tent</td>
-                                <td class="py-3">per day</td>
-                                <td class="py-3 text-gray-900">₱500</td>
-                                <td class="py-3"><input type="number" min="0" value="0" class="equipment-quantity form-input w-full rounded p-1 text-center" disabled></td>
-                            </tr>
-                            <tr data-price="7.5" data-unit="per_day_per_chair">
-                                <td class="p-4"><input type="checkbox" name="equipment" class="equipment-checkbox w-4 h-4 text-pgso-blue bg-gray-100 border-gray-300 rounded"></td>
-                                <td class="py-3 font-medium text-gray-900">Red Carpet</td>
-                                <td class="py-3">per day</td>
-                                <td class="py-3 text-gray-900">₱1,500</td>
-                                <td class="py-3"><input type="number" min="0" value="0" class="equipment-quantity form-input w-full rounded p-1 text-center" disabled></td>
-                            </tr>
-                            <tr data-price="7.5" data-unit="per_day_per_chair">
-                                <td class="p-4"><input type="checkbox" name="equipment" class="equipment-checkbox w-4 h-4 text-pgso-blue bg-gray-100 border-gray-300 rounded"></td>
-                                <td class="py-3 font-medium text-gray-900">Sound System: 2 microphones and 2 speakers</td>
-                                <td class="py-3">per hour</td>
-                                <td class="py-3 text-gray-900">₱200</td>
-                                <td class="py-3"><input type="number" min="0" value="0" class="equipment-quantity form-input w-full rounded p-1 text-center" disabled></td>
-                            </tr>
-                            <tr data-price="7.5" data-unit="per_day_per_chair">
-                                <td class="p-4"><input type="checkbox" name="equipment" class="equipment-checkbox w-4 h-4 text-pgso-blue bg-gray-100 border-gray-300 rounded"></td>
-                                <td class="py-3 font-medium text-gray-900">Microphones</td>
-                                <td class="py-3">per hour</td>
-                                <td class="py-3 text-gray-900">₱25</td>
-                                <td class="py-3"><input type="number" min="0" value="0" class="equipment-quantity form-input w-full rounded p-1 text-center" disabled></td>
-                            </tr>
-                            <tr data-price="7.5" data-unit="per_day_per_chair">
-                                <td class="p-4"><input type="checkbox" name="equipment" class="equipment-checkbox w-4 h-4 text-pgso-blue bg-gray-100 border-gray-300 rounded"></td>
-                                <td class="py-3 font-medium text-gray-900">Table Cloths</td>
-                                <td class="py-3">per cloth, per day</td>
-                                <td class="py-3 text-gray-900">₱70</td>
-                                <td class="py-3"><input type="number" min="0" value="0" class="equipment-quantity form-input w-full rounded p-1 text-center" disabled></td>
-                            </tr>
-                            <tr data-price="7.5" data-unit="per_day_per_chair">
-                                <td class="p-4"><input type="checkbox" name="equipment" class="equipment-checkbox w-4 h-4 text-pgso-blue bg-gray-100 border-gray-300 rounded"></td>
-                                <td class="py-3 font-medium text-gray-900">Table Runners</td>
-                                <td class="py-3">per cloth, per day</td>
-                                <td class="py-3 text-gray-900">₱25</td>
-                                <td class="py-3"><input type="number" min="0" value="0" class="equipment-quantity form-input w-full rounded p-1 text-center" disabled></td>
-                            </tr>
+                            <tr data-price="5500" data-unit="day"><td class="p-4"><input type="checkbox" class="equipment-checkbox w-4 h-4 rounded"></td><td class="py-3 text-gray-900">Boxing Ring Paraphernalia</td><td class="py-3">per day</td><td class="py-3">₱5,500</td><td class="py-3"><input type="number" min="0" value="0" class="equipment-quantity form-input w-full rounded p-1 text-center" disabled></td></tr>
+                            <tr data-price="100" data-unit="per_day_per_chair"><td class="p-4"><input type="checkbox" class="equipment-checkbox w-4 h-4 rounded"></td><td class="py-3 text-gray-900">Folding Tables</td><td class="py-3">per table/day</td><td class="py-3">₱100</td><td class="py-3"><input type="number" min="0" value="0" class="equipment-quantity form-input w-full rounded p-1 text-center" disabled></td></tr>
+                            <tr data-price="7.5" data-unit="per_day_per_chair"><td class="p-4"><input type="checkbox" class="equipment-checkbox w-4 h-4 rounded"></td><td class="py-3 text-gray-900">Monoblock Chairs</td><td class="py-3">per chair/day</td><td class="py-3">₱7.5</td><td class="py-3"><input type="number" min="0" value="0" class="equipment-quantity form-input w-full rounded p-1 text-center" disabled></td></tr>
+                            <tr data-price="20" data-unit="per_day_per_chair"><td class="p-4"><input type="checkbox" class="equipment-checkbox w-4 h-4 rounded"></td><td class="py-3 text-gray-900">Monoblock Tables</td><td class="py-3">per table/day</td><td class="py-3">₱20</td><td class="py-3"><input type="number" min="0" value="0" class="equipment-quantity form-input w-full rounded p-1 text-center" disabled></td></tr>
+                            <tr data-price="500" data-unit="day"><td class="p-4"><input type="checkbox" class="equipment-checkbox w-4 h-4 rounded"></td><td class="py-3 text-gray-900">Parachute Tent</td><td class="py-3">per day</td><td class="py-3">₱500</td><td class="py-3"><input type="number" min="0" value="0" class="equipment-quantity form-input w-full rounded p-1 text-center" disabled></td></tr>
+                            <tr data-price="1500" data-unit="day"><td class="p-4"><input type="checkbox" class="equipment-checkbox w-4 h-4 rounded"></td><td class="py-3 text-gray-900">Red Carpet</td><td class="py-3">per day</td><td class="py-3">₱1,500</td><td class="py-3"><input type="number" min="0" value="0" class="equipment-quantity form-input w-full rounded p-1 text-center" disabled></td></tr>
+                            <tr data-price="25" data-unit="hour"><td class="p-4"><input type="checkbox" class="equipment-checkbox w-4 h-4 rounded"></td><td class="py-3 text-gray-900">Microphones</td><td class="py-3">per hour</td><td class="py-3">₱25</td><td class="py-3"><input type="number" min="0" value="0" class="equipment-quantity form-input w-full rounded p-1 text-center" disabled></td></tr>
+                            <tr data-price="70" data-unit="per_day_per_chair"><td class="p-4"><input type="checkbox" class="equipment-checkbox w-4 h-4 rounded"></td><td class="py-3 text-gray-900">Table Cloths</td><td class="py-3">per cloth/day</td><td class="py-3">₱70</td><td class="py-3"><input type="number" min="0" value="0" class="equipment-quantity form-input w-full rounded p-1 text-center" disabled></td></tr>
+                            <tr data-price="25" data-unit="per_day_per_chair"><td class="p-4"><input type="checkbox" class="equipment-checkbox w-4 h-4 rounded"></td><td class="py-3 text-gray-900">Table Runners</td><td class="py-3">per cloth/day</td><td class="py-3">₱25</td><td class="py-3"><input type="number" min="0" value="0" class="equipment-quantity form-input w-full rounded p-1 text-center" disabled></td></tr>
                         </tbody>
                     </table>
                     <p class="text-s text-gray-500 mt-2 text-center font-light">Inclusive of four (4) tables and 250 chairs (max.)</p>
@@ -339,7 +266,7 @@
                     <p class="text-xs text-gray-500 mt-4">Note: Final pricing may vary based on actual hours and equipment usage. Contact PGSO for detailed quotes.</p>
                 </div>
 
-                <button type="submit" class="w-full pgso-btn text-white font-bold py-4 rounded-lg text-lg transition shadow-md">
+                <button type="button" class="w-full pgso-btn text-white font-bold py-4 rounded-lg text-lg transition shadow-md">
                     View Reservation Summary
                 </button>
 
@@ -351,254 +278,234 @@
         &copy; 2025 Provincial General Services Office. All rights reserved.
     </footer>
 
-<script>
-    // Constants for pricing
-    const SECURITY_DEPOSIT = 3000;
-    // Reserved dates (for demonstration) - Year-Month-Day
-    const RESERVED_DATES = [
-        '2025-11-19', 
-        '2025-11-20',
-        '2025-12-10' // Example in the next month
-    ];
-
-    // State variables
-    let selectedDates = [];
-    let currentMonth = new Date().getMonth();
-    let currentYear = new Date().getFullYear();
-
-    // DOM Elements
-    const calendarDaysEl = document.getElementById('calendar-days');
-    const currentMonthYearEl = document.getElementById('current-month-year');
-    const prevMonthBtn = document.getElementById('prev-month-btn');
-    const nextMonthBtn = document.getElementById('next-month-btn');
-    const selectedDaysCountEl = document.getElementById('selected-days-count');
-
-    // Price Elements
-    const venueSelect = document.getElementById('venue-select');
-    const equipmentCheckboxes = document.querySelectorAll('.equipment-checkbox');
-    const equipmentQuantities = document.querySelectorAll('.equipment-quantity');
-    const basePriceDisplay = document.getElementById('base-price-display');
-    const daysReservedDisplay = document.getElementById('days-reserved-display');
-    const equipmentCostDisplay = document.getElementById('equipment-cost-display');
-    const subtotalDisplay = document.getElementById('subtotal-display');
-    const estimatedTotalDisplay = document.getElementById('estimated-total-display');
-    const durationRadios = document.querySelectorAll('input[name="duration"]');
-
-    /**
-     * Helper function to format price as Philippine Peso (₱)
-     * @param {number} price
-     */
-    const formatPrice = (price) => {
-        return '₱' + price.toLocaleString('en-PH', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
-    }
-
-    // --- Calendar Functionality ---
-
-    /**
-     * Checks if a given date is in the past.
-     * @param {Date} date - The date to check.
-     * @returns {boolean} - True if the date is in the past, false otherwise.
-     */
-    const isPastDate = (date) => {
-        const today = new Date();
-        // Set both dates to midnight to only compare day, month, and year
-        today.setHours(0, 0, 0, 0);
-        date.setHours(0, 0, 0, 0);
-        return date < today;
-    }
-
-    /**
-     * Renders the calendar days for the currentMonth and currentYear.
-     */
-    const renderCalendar = () => {
-        calendarDaysEl.innerHTML = '';
-        const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
-        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-        const startingDay = firstDayOfMonth.getDay(); // 0 (Sun) to 6 (Sat)
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // --- CONFIGURATION ---
+        const OVERTIME_RATE = 575; 
+        const SECURITY_DEPOSIT = 3000;
+        const VENUE_NAME = "Gov. Ben Palispis Auditorium";
         
-        // Update month/year title
-        currentMonthYearEl.textContent = firstDayOfMonth.toLocaleDateString('en-US', { 
-            year: 'numeric', 
-            month: 'long' 
-        });
+        // --- BLOCKED DATES DATABASE (Example) ---
+        const BLOCKED_DATES = ["2025-11-20", "2025-12-25"];
 
-        // 1. Render blank cells for preceding days
-        for (let i = 0; i < startingDay; i++) {
-            const prevMonthDay = new Date(currentYear, currentMonth, 0).getDate() - startingDay + i + 1;
-            calendarDaysEl.innerHTML += `<div class="cal-cell cal-past">${prevMonthDay}</div>`;
-        }
+        // --- DOM ELEMENTS ---
+        const allTextInputs = document.querySelectorAll('input[type="text"]');
+        const nameInput = allTextInputs[0];
+        const contactInput = allTextInputs[1];
+        const eventTypeInput = allTextInputs[2];
+        const emailInput = document.querySelector('input[type="email"]');
+        const notesInput = document.querySelector('textarea');
+        
+        const durationRadios = document.getElementsByName('duration');
+        const startTimeInput = document.querySelectorAll('input[type="time"]')[0];
+        const endTimeInput = document.querySelectorAll('input[type="time"]')[1];
+        const equipmentRows = document.querySelectorAll('table tbody tr'); // Selects all rows from all tables
+        const summaryBtn = document.querySelector('button.pgso-btn');
 
-        // 2. Render actual days
-        for (let day = 1; day <= daysInMonth; day++) {
-            const date = new Date(currentYear, currentMonth, day);
-            const dateString = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-            
-            let className = 'cal-available date-cell';
-            let isClickable = true;
+        // Calendar Elements
+        const calendarGrid = document.getElementById('calendar-grid');
+        const currentMonthYear = document.getElementById('currentMonthYear');
+        const prevMonthBtn = document.getElementById('prevMonth');
+        const nextMonthBtn = document.getElementById('nextMonth');
 
-            if (isPastDate(date)) {
-                className = 'cal-past';
-                isClickable = false;
-            } else if (RESERVED_DATES.includes(dateString)) {
-                className = 'cal-reserved';
-                isClickable = false;
-            } else if (selectedDates.includes(dateString)) {
-                className = 'cal-selected date-cell';
-            } else {
-                 className = 'cal-available date-cell';
+        // Totals
+        const displayBasePrice = document.getElementById('base-price-display');
+        const displayDays = document.getElementById('days-reserved-display');
+        const displayEquipCost = document.getElementById('equipment-cost-display');
+        const displaySubtotal = document.getElementById('subtotal-display');
+        const displayTotal = document.getElementById('estimated-total-display');
+
+        // --- STATE ---
+        let currentDate = new Date();
+        let today = new Date();
+        let selectedDates = [];
+
+        // --- 1. CALENDAR LOGIC ---
+        function renderCalendar() {
+            calendarGrid.innerHTML = "";
+            const options = { month: 'long', year: 'numeric' };
+            currentMonthYear.innerText = currentDate.toLocaleDateString('en-US', options);
+
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            // Empty cells
+            for (let i = 0; i < firstDay; i++) {
+                calendarGrid.appendChild(document.createElement('div'));
             }
 
-            const cell = document.createElement('div');
-            cell.classList.add('cal-cell', ...className.split(' '));
-            cell.textContent = day;
-            cell.dataset.date = dateString;
-            cell.dataset.clickable = isClickable;
-
-            if (isClickable) {
-                cell.addEventListener('click', toggleDateSelection);
-            }
-
-            calendarDaysEl.appendChild(cell);
-        }
-        
-        // 3. Render next month's filler days (up to 42 total cells)
-        const totalCells = startingDay + daysInMonth;
-        const fillerDays = 42 - totalCells; // Maximum cells to prevent layout shift
-        for (let i = 1; i <= fillerDays; i++) {
-            calendarDaysEl.innerHTML += `<div class="cal-cell cal-past text-gray-300">${i}</div>`;
-        }
-    };
-
-    /**
-     * Toggles the selection state of a date cell.
-     * @param {Event} event - The click event.
-     */
-    const toggleDateSelection = (event) => {
-        const cell = event.currentTarget;
-        const date = cell.dataset.date;
-
-        if (cell.classList.contains('cal-selected')) {
-            // Deselect
-            cell.classList.remove('cal-selected');
-            cell.classList.add('cal-available');
-            selectedDates = selectedDates.filter(d => d !== date);
-        } else if (cell.dataset.clickable === 'true') {
-            // Select
-            cell.classList.add('cal-selected');
-            cell.classList.remove('cal-available');
-            selectedDates.push(date);
-        }
-
-        selectedDaysCountEl.textContent = selectedDates.length;
-        calculateTotal();
-    };
-
-    // Navigation buttons
-    prevMonthBtn.addEventListener('click', () => {
-        currentMonth--;
-        if (currentMonth < 0) {
-            currentMonth = 11;
-            currentYear--;
-        }
-        renderCalendar();
-    });
-
-    nextMonthBtn.addEventListener('click', () => {
-        currentMonth++;
-        if (currentMonth > 11) {
-            currentMonth = 0;
-            currentYear++;
-        }
-        renderCalendar();
-    });
-
-    // --- Price Calculation Functionality ---
-
-    /**
-     * Calculates the total cost of all selected elements (Venue, Days, Equipment).
-     */
-    const calculateTotal = () => {
-        // 1. Get Venue Base Price
-        const selectedVenueOption = venueSelect.options[venueSelect.selectedIndex];
-        const venueBasePrice = parseFloat(selectedVenueOption.dataset.price) || 0;
-
-        // 2. Get Number of Days
-        const numberOfDays = selectedDates.length;
-        daysReservedDisplay.textContent = `${numberOfDays} day${numberOfDays !== 1 ? 's' : ''}`;
-
-        // 3. Calculate Base Cost (Venue x Days)
-        let venueCost = venueBasePrice * numberOfDays;
-        basePriceDisplay.textContent = formatPrice(venueBasePrice);
-
-        // 4. Calculate Equipment Cost
-        let equipmentCost = 0;
-        equipmentCheckboxes.forEach((checkbox, index) => {
-            const quantityInput = equipmentQuantities[index];
-            const row = checkbox.closest('tr');
-            const pricePerUnit = parseFloat(row.dataset.price);
-            const unitType = row.dataset.unit;
-            let quantity = parseInt(quantityInput.value) || 0;
-
-            if (checkbox.checked) {
-                // Determine if quantity is days, hours, or units per day
-                let effectiveQuantity = quantity;
-                if (unitType === 'day' || unitType === 'per_day_per_chair') {
-                    // Cost is per day, so multiply by days reserved
-                    effectiveQuantity = quantity * numberOfDays; 
-                } else if (unitType === 'hour') {
-                    // For hour-based items, we need a duration radio check (simplification)
-                    const selectedDurationRadio = document.querySelector('input[name="duration"]:checked');
-                    const durationHours = selectedDurationRadio ? parseInt(selectedDurationRadio.dataset.durationValue) : 1; 
-                    effectiveQuantity = quantity * durationHours;
-                }
+            // Days
+            for (let i = 1; i <= daysInMonth; i++) {
+                const dayCell = document.createElement('div');
+                dayCell.classList.add('cal-cell');
+                dayCell.innerText = i;
                 
-                equipmentCost += pricePerUnit * effectiveQuantity;
+                // Date String: YYYY-MM-DD
+                const cellDateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+                
+                // Comparisons (Time reset to midnight)
+                const cellDateObj = new Date(year, month, i);
+                const compareDate = new Date(cellDateObj.setHours(0,0,0,0));
+                const compareToday = new Date(today.setHours(0,0,0,0));
+
+                if (compareDate < compareToday) {
+                    dayCell.classList.add('cal-past');
+                } else if (BLOCKED_DATES.includes(cellDateStr)) {
+                    dayCell.classList.add('cal-reserved');
+                    dayCell.title = "Already Reserved";
+                } else {
+                    dayCell.classList.add('cal-available');
+                    if (selectedDates.includes(cellDateStr)) {
+                        dayCell.classList.add('cal-selected');
+                    }
+                    dayCell.addEventListener('click', function() {
+                        if (selectedDates.includes(cellDateStr)) {
+                            selectedDates = selectedDates.filter(d => d !== cellDateStr);
+                            this.classList.remove('cal-selected');
+                        } else {
+                            selectedDates.push(cellDateStr);
+                            this.classList.add('cal-selected');
+                        }
+                        calculateTotal();
+                    });
+                }
+                calendarGrid.appendChild(dayCell);
+            }
+        }
+
+        prevMonthBtn.addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() - 1); renderCalendar(); });
+        nextMonthBtn.addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() + 1); renderCalendar(); });
+
+        // --- 2. CALCULATIONS ---
+        function calculateTotal() {
+            const totalDays = selectedDates.length || 0;
+            let baseDuration = 0;
+            let basePrice = 0;
+            let durationLabel = "";
+
+            const radio = document.querySelector('input[name="duration"]:checked');
+            if (radio) {
+                baseDuration = parseInt(radio.dataset.durationValue);
+                durationLabel = radio.nextElementSibling.innerText.trim();
+                basePrice = baseDuration === 4 ? 1500 : 3000;
+            }
+
+            let hours = baseDuration;
+            let overtime = 0;
+
+            if (startTimeInput.value && endTimeInput.value) {
+                const s = new Date(`1970-01-01T${startTimeInput.value}Z`);
+                const e = new Date(`1970-01-01T${endTimeInput.value}Z`);
+                let diff = (e - s) / (1000 * 60 * 60);
+                if (diff < 0) diff += 24;
+                if (diff > 0) hours = diff;
+                if (hours > baseDuration && baseDuration > 0) {
+                    overtime = Math.ceil(hours - baseDuration) * OVERTIME_RATE;
+                }
+            }
+
+            const venueTotal = (basePrice + overtime) * (totalDays || 1);
+            let equipTotal = 0;
+
+            equipmentRows.forEach(row => {
+                const cb = row.querySelector('.equipment-checkbox');
+                const qtyInput = row.querySelector('.equipment-quantity');
+                if (cb && cb.checked) {
+                    const price = parseFloat(row.dataset.price);
+                    const qty = parseInt(qtyInput.value) || 0;
+                    const billingHours = Math.ceil(hours) > 0 ? Math.ceil(hours) : 1;
+                    const days = totalDays || 1;
+                    
+                    if(row.dataset.unit.includes('hour')) {
+                        equipTotal += price * qty * billingHours * days;
+                    } else {
+                        equipTotal += price * qty * days;
+                    }
+                }
+            });
+
+            // Display Logic
+            const displayVenue = totalDays === 0 ? 0 : venueTotal;
+            const displayEquip = totalDays === 0 ? 0 : equipTotal;
+            const subTotal = displayVenue + displayEquip;
+            const total = subTotal + SECURITY_DEPOSIT;
+
+            displayDays.innerText = `${totalDays} day(s)`;
+            displayBasePrice.innerHTML = overtime > 0 
+                ? `₱${(basePrice*(totalDays||1)).toLocaleString()} <span class="text-red-500 text-xs">(+₱${(overtime*(totalDays||1)).toLocaleString()} OT)</span>` 
+                : `₱${displayVenue.toLocaleString()}`;
+            displayEquipCost.innerText = `₱${displayEquip.toLocaleString()}`;
+            displaySubtotal.innerText = `₱${subTotal.toLocaleString()}`;
+            displayTotal.innerText = `₱${total.toLocaleString()}`;
+
+            return { venueTotal, equipTotal, total, hours, durationLabel, totalDays };
+        }
+
+        // Listeners
+        durationRadios.forEach(r => r.addEventListener('change', calculateTotal));
+        startTimeInput.addEventListener('change', calculateTotal);
+        endTimeInput.addEventListener('change', calculateTotal);
+        equipmentRows.forEach(row => {
+            const cb = row.querySelector('.equipment-checkbox');
+            const qty = row.querySelector('.equipment-quantity');
+            if(cb && qty) {
+                cb.addEventListener('change', function() { qty.disabled = !this.checked; qty.value = this.checked ? 1 : 0; calculateTotal(); });
+                qty.addEventListener('input', calculateTotal);
             }
         });
-        
-        equipmentCostDisplay.textContent = formatPrice(equipmentCost);
 
-        // 5. Calculate Subtotal and Total
-        const subtotal = venueCost + equipmentCost;
-        const estimatedTotal = subtotal + SECURITY_DEPOSIT;
+        // --- 3. SAVE & REDIRECT ---
+        summaryBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const calc = calculateTotal();
+            
+            const equipList = [];
+            equipmentRows.forEach(row => {
+                const cb = row.querySelector('.equipment-checkbox');
+                const qtyInput = row.querySelector('.equipment-quantity');
+                if (cb && cb.checked) {
+                    const price = parseFloat(row.dataset.price);
+                    const qty = parseInt(qtyInput.value);
+                    const billingHours = Math.ceil(calc.hours) || 1;
+                    const days = calc.totalDays || 1;
+                    const sub = row.dataset.unit.includes('hour') ? price * qty * billingHours * days : price * qty * days;
+                    
+                    equipList.push({
+                        name: row.cells[1].innerText.trim(),
+                        unit: row.cells[2].innerText.trim(),
+                        qty: qty,
+                        price: price,
+                        subtotal: sub
+                    });
+                }
+            });
 
-        subtotalDisplay.textContent = formatPrice(subtotal);
-        estimatedTotalDisplay.textContent = formatPrice(estimatedTotal);
-    };
+            const data = {
+                contact: { fullName: nameInput.value, contactNumber: contactInput.value, email: emailInput.value },
+                event: { 
+                    venue: VENUE_NAME, 
+                    eventType: eventTypeInput.value, 
+                    dates: selectedDates.sort().join(', '), 
+                    startTime: startTimeInput.value, 
+                    endTime: endTimeInput.value, 
+                    durationLabel: calc.durationLabel,
+                    totalHours: Math.ceil(calc.hours)
+                },
+                equipment: equipList,
+                pricing: { venueTotal: calc.venueTotal, equipmentTotal: calc.equipTotal, securityDeposit: SECURITY_DEPOSIT, grandTotal: calc.total },
+                notes: notesInput.value
+            };
 
-    // --- Event Listeners ---
-
-    // Venue change listener
-    venueSelect.addEventListener('change', calculateTotal);
-
-    // Equipment checkbox and quantity listeners
-    equipmentCheckboxes.forEach((checkbox, index) => {
-        const quantityInput = equipmentQuantities[index];
-        
-        // Toggle quantity input on checkbox change
-        checkbox.addEventListener('change', () => {
-            quantityInput.disabled = !checkbox.checked;
-            quantityInput.value = checkbox.checked ? 1 : 0; // Set to 1 if checked, 0 if unchecked
-            calculateTotal();
+            localStorage.setItem('pgsoReservationData', JSON.stringify(data));
+            window.location.href = 'summary.html';
         });
 
-        // Recalculate on quantity change
-        quantityInput.addEventListener('input', calculateTotal);
-        quantityInput.addEventListener('change', calculateTotal);
-    });
-
-    // Duration radio listeners (affects hour-based equipment)
-    durationRadios.forEach(radio => {
-        radio.addEventListener('change', calculateTotal);
-    });
-
-
-    // Initial setup
-    document.addEventListener('DOMContentLoaded', () => {
+        // Initialize
         renderCalendar();
-        calculateTotal(); // Initial calculation
+        calculateTotal();
     });
-</script>
-
+    </script>
 </body>
 </html>
