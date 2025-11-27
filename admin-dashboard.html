@@ -20,11 +20,11 @@
         .cal-cell { height: 40px; width: 40px; display: flex; align-items: center; justify-content: center; margin: 0 auto; border-radius: 50%; cursor: pointer; transition: all 0.2s; position: relative; }
         .cal-cell:hover:not(.empty) { background-color: #f3f4f6; }
         
-        /* Status Indicators (Dots) */
+        /* Status Indicators */
         .has-event::after { content: ''; position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%); width: 6px; height: 6px; border-radius: 50%; }
-        .status-pending::after { background-color: #eab308; } /* Yellow */
-        .status-confirmed::after { background-color: #22c55e; } /* Green */
-        .status-declined::after { background-color: #ef4444; } /* Red */
+        .status-pending::after { background-color: #eab308; } 
+        .status-confirmed::after { background-color: #22c55e; } 
+        .status-declined::after { background-color: #ef4444; } 
         
         .cal-selected { background-color: #3c5473 !important; color: white !important; font-weight: bold; }
         .cal-today { border: 2px solid #3c5473; }
@@ -68,14 +68,10 @@
                     <h2 id="currentMonthYear" class="text-2xl font-bold tracking-tight">Month Year</h2>
                     <button id="nextMonth" class="text-gray-800 hover:bg-gray-100 w-10 h-10 rounded-full"><i class="fa-solid fa-chevron-right"></i></button>
                 </div>
-
                 <div class="cal-grid font-bold text-gray-400 mb-4 text-sm uppercase">
                     <div>Su</div><div>Mo</div><div>Tu</div><div>We</div><div>Th</div><div>Fr</div><div>Sa</div>
                 </div>
-                
-                <div id="calendar-grid" class="cal-grid text-lg text-gray-600 gap-y-2 flex-grow content-start">
-                    </div>
-
+                <div id="calendar-grid" class="cal-grid text-lg text-gray-600 gap-y-2 flex-grow content-start"></div>
                 <div class="mt-auto pt-6 flex gap-6 text-xs justify-center border-t border-gray-100">
                     <div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-yellow-500"></div> Pending</div>
                     <div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-green-500"></div> Confirmed</div>
@@ -85,7 +81,6 @@
 
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 h-[650px] flex flex-col overflow-hidden">
                 <h3 class="font-medium text-gray-900 mb-4 pb-4 border-b">Reservations for <span id="selected-date-display" class="font-bold text-pgso-blue">Select a Date</span></h3>
-                
                 <div id="reservation-list" class="flex-grow overflow-y-auto space-y-4 pr-2">
                     <div class="h-full flex flex-col items-center justify-center text-gray-400">
                         <i class="fa-regular fa-calendar-xmark text-4xl mb-2"></i>
@@ -96,31 +91,62 @@
         </div>
 
         <div id="section-analytics" class="hidden space-y-8">
+            
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                    <p class="text-sm text-gray-500 mb-1">Total Confirmed</p>
-                    <p class="text-3xl font-bold text-green-600" id="stat-total-confirmed">0</p>
+                    <div class="flex justify-between items-start mb-2">
+                        <p class="text-sm text-gray-500">Total Bookings</p>
+                        <i class="fa-solid fa-layer-group text-blue-500 opacity-50"></i>
+                    </div>
+                    <p class="text-3xl font-bold text-blue-600" id="stat-total-bookings">0</p>
+                    <p class="text-xs text-gray-400 mt-1">All time count</p>
                 </div>
+
                 <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                    <p class="text-sm text-gray-500 mb-1">Pending Approval</p>
+                    <div class="flex justify-between items-start mb-2">
+                        <p class="text-sm text-gray-500">Pending Approval</p>
+                        <i class="fa-solid fa-clock text-yellow-500 opacity-50"></i>
+                    </div>
                     <p class="text-3xl font-bold text-yellow-500" id="stat-pending">0</p>
+                    <p class="text-xs text-gray-400 mt-1">Requires action</p>
                 </div>
+
                 <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                    <p class="text-sm text-gray-500 mb-1">Cancelled/Declined</p>
+                    <div class="flex justify-between items-start mb-2">
+                        <p class="text-sm text-gray-500">Cancelled/Declined</p>
+                        <i class="fa-solid fa-ban text-red-500 opacity-50"></i>
+                    </div>
                     <p class="text-3xl font-bold text-red-500" id="stat-cancelled">0</p>
+                    <p class="text-xs text-gray-400 mt-1">Total rejected</p>
                 </div>
+
                 <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                    <p class="text-sm text-gray-500 mb-1">Most Reserved Venue</p>
-                    <p class="text-lg font-bold text-pgso-blue truncate" id="stat-venue">N/A</p>
+                    <div class="flex justify-between items-start mb-2">
+                        <p class="text-sm text-gray-500">Most Reserved</p>
+                        <i class="fa-solid fa-trophy text-purple-500 opacity-50"></i>
+                    </div>
+                    <p class="text-lg font-bold text-purple-600 truncate" id="stat-venue">N/A</p>
+                    <p class="text-xs text-gray-400 mt-1">Top venue</p>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                    <h3 class="text-sm font-medium mb-6">Reservation Status Distribution</h3>
-                    <div class="h-64"><canvas id="statusChart"></canvas></div>
+                    <h3 class="text-sm font-medium mb-6">Monthly Trend (2025)</h3>
+                    <div class="h-64"><canvas id="lineChart"></canvas></div>
                 </div>
                 <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                    <h3 class="text-sm font-medium mb-6">Bookings Overview</h3>
+                    <div class="h-64"><canvas id="barChart"></canvas></div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 col-span-1">
+                    <h3 class="text-sm font-medium mb-6">Status Distribution</h3>
+                    <div class="h-64"><canvas id="statusChart"></canvas></div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 col-span-2">
                     <h3 class="text-sm font-medium mb-6">Venue Popularity</h3>
                     <div class="h-64"><canvas id="venueChart"></canvas></div>
                 </div>
@@ -128,9 +154,36 @@
         </div>
 
         <div id="section-inventory" class="hidden">
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center text-gray-500">
-                <i class="fa-solid fa-box-open text-4xl mb-4"></i>
-                <p>Inventory Module Integration Pending...</p>
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h2 class="text-lg font-bold flex items-center gap-2">
+                            <i class="fa-solid fa-box-open"></i> Equipment Inventory
+                        </h2>
+                        <p class="text-xs text-gray-500 mt-1">Available quantities are calculated based on confirmed bookings for <span class="font-bold text-pgso-blue">TODAY</span>.</p>
+                    </div>
+                    <button onclick="openInventoryModal()" class="pgso-btn text-white px-4 py-2 rounded text-sm font-medium flex items-center gap-2">
+                        <i class="fa-solid fa-plus"></i> Add Equipment
+                    </button>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left text-gray-500">
+                        <thead class="text-xs text-gray-900 uppercase bg-white border-b border-gray-200">
+                            <tr>
+                                <th class="py-3 px-4">Equipment Name</th>
+                                <th class="py-3 px-4">Unit</th>
+                                <th class="py-3 px-4">Price</th>
+                                <th class="py-3 px-4 text-center">Total Stock</th>
+                                <th class="py-3 px-4 text-center bg-gray-50">Booked (Today)</th>
+                                <th class="py-3 px-4 text-center font-bold text-green-600">Available</th>
+                                <th class="py-3 px-4 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100" id="inventory-table-body">
+                            </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
@@ -138,7 +191,7 @@
 
     <div id="editModal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
         <div class="bg-white rounded-lg shadow-2xl p-6 w-full max-w-md relative">
-            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+            <button onclick="closeModal('editModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-xl"></i></button>
             <h3 class="text-xl font-bold mb-4">Edit Reservation</h3>
             <form onsubmit="saveReservationChanges(event)">
                 <input type="hidden" id="edit-id">
@@ -159,313 +212,237 @@
         </div>
     </div>
 
-    <script>
-        // --- DATABASE CONFIGURATION ---
-        const DB_KEY = 'pgso_admin_db'; // Permanent storage
-        const INCOMING_KEY = 'pgsoReservationData'; // Incoming from user pages
+    <div id="inventoryModal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-2xl p-6 w-full max-w-md relative">
+            <button onclick="closeModal('inventoryModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+            <h3 class="text-xl font-bold mb-4" id="inv-modal-title">Add Equipment</h3>
+            <form onsubmit="saveInventoryItem(event)">
+                <input type="hidden" id="inv-id">
+                <div class="mb-3"><label class="block text-xs font-bold text-gray-700 uppercase mb-1">Equipment Name</label><input type="text" id="inv-name" class="modal-input w-full rounded p-2 text-sm" required></div>
+                <div class="mb-3"><label class="block text-xs font-bold text-gray-700 uppercase mb-1">Unit</label><input type="text" id="inv-unit" class="modal-input w-full rounded p-2 text-sm" required></div>
+                <div class="grid grid-cols-2 gap-4 mb-3">
+                    <div><label class="block text-xs font-bold text-gray-700 uppercase mb-1">Price (₱)</label><input type="number" id="inv-price" class="modal-input w-full rounded p-2 text-sm" required></div>
+                    <div><label class="block text-xs font-bold text-gray-700 uppercase mb-1">Total Stock</label><input type="number" id="inv-qty" class="modal-input w-full rounded p-2 text-sm" required></div>
+                </div>
+                <button type="submit" class="w-full pgso-btn text-white font-bold py-2 rounded mt-4">Save Equipment</button>
+            </form>
+        </div>
+    </div>
 
-        // State
+    <script>
+        const DB_KEY = 'pgso_admin_db'; 
+        const INVENTORY_KEY = 'pgso_inventory';
+        const INCOMING_KEY = 'pgsoReservationData'; 
+
         let reservations = [];
+        let inventory = [];
         let currentDate = new Date();
         let selectedDateStr = null;
-        let charts = {}; // Store chart instances
+        let charts = {};
+
+        const DEFAULT_INVENTORY = [
+            { id: 1, name: 'Folding Tables', unit: 'per table', price: 100, qty: 50 },
+            { id: 2, name: 'Monoblock Chairs', unit: 'per chair', price: 7.5, qty: 500 },
+            { id: 3, name: 'Sound System', unit: 'per set', price: 200, qty: 2 },
+            { id: 4, name: 'Projector', unit: 'per unit', price: 200, qty: 5 },
+            { id: 5, name: 'LED Wall', unit: 'per day', price: 10000, qty: 1 },
+            { id: 6, name: 'Parachute Tent', unit: 'per day', price: 500, qty: 2 }
+        ];
 
         document.addEventListener('DOMContentLoaded', () => {
-            ingestNewReservations(); // Check for new data from user pages
+            ingestNewReservations();
             loadDatabase();
+            loadInventory();
             renderCalendar();
             renderAnalytics();
+            renderInventoryTable();
         });
 
-        // --- 1. DATABASE LOGIC (Local Storage) ---
-        
+        // --- DATA LOGIC ---
         function ingestNewReservations() {
-            // Check if there is a new reservation from the user pages
             const incoming = localStorage.getItem(INCOMING_KEY);
             if (incoming) {
                 const data = JSON.parse(incoming);
-                
-                const newRecord = {
-                    id: Date.now().toString(), // Unique ID
-                    status: 'pending', // Default status
-                    submittedAt: new Date().toISOString(),
-                    ...data // Spread the rest of the data
-                };
-
-                // Add to permanent DB
+                const newRecord = { id: Date.now().toString(), status: 'pending', submittedAt: new Date().toISOString(), ...data };
                 const currentDB = JSON.parse(localStorage.getItem(DB_KEY) || '[]');
                 currentDB.push(newRecord);
                 localStorage.setItem(DB_KEY, JSON.stringify(currentDB));
-
-                // Clear the incoming slot so we don't duplicate it on refresh
                 localStorage.removeItem(INCOMING_KEY);
-                
                 alert("New Reservation Received!");
             }
         }
 
-        function loadDatabase() {
-            reservations = JSON.parse(localStorage.getItem(DB_KEY) || '[]');
+        function loadDatabase() { reservations = JSON.parse(localStorage.getItem(DB_KEY) || '[]'); }
+        function loadInventory() {
+            const storedInv = localStorage.getItem(INVENTORY_KEY);
+            if(storedInv) { inventory = JSON.parse(storedInv); } 
+            else { inventory = DEFAULT_INVENTORY; localStorage.setItem(INVENTORY_KEY, JSON.stringify(inventory)); }
         }
-
         function saveDatabase() {
             localStorage.setItem(DB_KEY, JSON.stringify(reservations));
-            renderCalendar(); // Re-render to show status color changes
-            if(selectedDateStr) renderReservationList(selectedDateStr); // Refresh list if open
-            renderAnalytics();
+            renderCalendar(); if(selectedDateStr) renderReservationList(selectedDateStr); renderAnalytics(); renderInventoryTable();
         }
+        function saveInventoryDB() { localStorage.setItem(INVENTORY_KEY, JSON.stringify(inventory)); renderInventoryTable(); }
+        function refreshData() { ingestNewReservations(); loadDatabase(); loadInventory(); renderCalendar(); renderAnalytics(); renderInventoryTable(); }
 
-        function refreshData() {
-            ingestNewReservations();
-            loadDatabase();
-            renderCalendar();
-            renderAnalytics();
-        }
-
-        // --- 2. CALENDAR LOGIC ---
-
+        // --- CALENDAR ---
         function renderCalendar() {
             const grid = document.getElementById('calendar-grid');
-            const monthTitle = document.getElementById('currentMonthYear');
+            document.getElementById('currentMonthYear').innerText = currentDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
             grid.innerHTML = "";
-
             const year = currentDate.getFullYear();
             const month = currentDate.getMonth();
-            
-            monthTitle.innerText = currentDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-
             const firstDay = new Date(year, month, 1).getDay();
             const daysInMonth = new Date(year, month + 1, 0).getDate();
             const today = new Date();
 
-            // Empty cells
-            for (let i = 0; i < firstDay; i++) {
-                grid.appendChild(document.createElement('div'));
-            }
+            for (let i = 0; i < firstDay; i++) grid.appendChild(document.createElement('div'));
 
-            // Days
             for (let i = 1; i <= daysInMonth; i++) {
                 const cell = document.createElement('div');
-                cell.className = 'cal-cell';
-                cell.innerText = i;
-                
-                // Helper to create comparable string for this cell
-                const cellDateObj = new Date(year, month, i);
-                const cellDateStr = cellDateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }); // "Nov 27, 2025"
-                const cellIsoStr = `${year}-${String(month+1).padStart(2,'0')}-${String(i).padStart(2,'0')}`; // "2025-11-27"
+                cell.className = 'cal-cell'; cell.innerText = i;
+                const cellDateStr = new Date(year, month, i).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                const cellIsoStr = `${year}-${String(month+1).padStart(2,'0')}-${String(i).padStart(2,'0')}`;
 
-                // Check for events on this day
-                const daysEvents = reservations.filter(res => {
-                    const resDates = res.event.dates; 
-                    // Check if the reservation string includes this date (handles multi-day strings)
-                    return resDates.includes(cellDateStr) || resDates.includes(cellIsoStr);
-                });
-
+                const daysEvents = reservations.filter(res => res.event.dates.includes(cellDateStr) || res.event.dates.includes(cellIsoStr));
                 if (daysEvents.length > 0) {
                     cell.classList.add('has-event');
-                    // Determine color priority: Declined < Pending < Confirmed
                     if (daysEvents.some(e => e.status === 'confirmed')) cell.classList.add('status-confirmed');
                     else if (daysEvents.some(e => e.status === 'pending')) cell.classList.add('status-pending');
                     else cell.classList.add('status-declined');
                 }
-
-                // Check if today
-                if (today.toDateString() === cellDateObj.toDateString()) cell.classList.add('cal-today');
-
-                // Selection Logic
-                cell.onclick = () => {
-                    document.querySelectorAll('.cal-cell').forEach(c => c.classList.remove('cal-selected'));
-                    cell.classList.add('cal-selected');
-                    selectedDateStr = cellDateStr; // Store format "Nov 27, 2025"
-                    // Also pass ISO for fallback check
-                    renderReservationList(cellDateStr, cellIsoStr); 
-                };
-
+                if (today.toDateString() === new Date(year, month, i).toDateString()) cell.classList.add('cal-today');
+                cell.onclick = () => { document.querySelectorAll('.cal-cell').forEach(c => c.classList.remove('cal-selected')); cell.classList.add('cal-selected'); selectedDateStr = cellDateStr; renderReservationList(cellDateStr, cellIsoStr); };
                 grid.appendChild(cell);
             }
         }
-
         document.getElementById('prevMonth').onclick = () => { currentDate.setMonth(currentDate.getMonth() - 1); renderCalendar(); };
         document.getElementById('nextMonth').onclick = () => { currentDate.setMonth(currentDate.getMonth() + 1); renderCalendar(); };
-
-
-        // --- 3. RESERVATION LIST LOGIC ---
 
         function renderReservationList(dateStr, isoStr) {
             const listContainer = document.getElementById('reservation-list');
             document.getElementById('selected-date-display').innerText = dateStr;
             listContainer.innerHTML = "";
-
-            // Find matching reservations
-            const matches = reservations.filter(res => {
-                return res.event.dates.includes(dateStr) || (isoStr && res.event.dates.includes(isoStr));
-            });
-
-            if (matches.length === 0) {
-                listContainer.innerHTML = `
-                    <div class="h-full flex flex-col items-center justify-center text-gray-400 mt-10">
-                        <i class="fa-regular fa-calendar text-4xl mb-2"></i>
-                        <p class="text-sm">No reservations for this date.</p>
-                    </div>`;
-                return;
-            }
-
-            // Render Cards
+            const matches = reservations.filter(res => res.event.dates.includes(dateStr) || (isoStr && res.event.dates.includes(isoStr)));
+            if (matches.length === 0) { listContainer.innerHTML = `<div class="h-full flex flex-col items-center justify-center text-gray-400 mt-10"><i class="fa-regular fa-calendar-xmark text-4xl mb-2"></i><p class="text-sm">No reservations.</p></div>`; return; }
             matches.forEach(res => {
                 const card = document.createElement('div');
                 card.className = "border border-gray-200 rounded-lg p-4 hover:shadow-md transition bg-white";
-                
-                // Status Badge Color
-                let badgeClass = "bg-gray-100 text-gray-800";
-                if(res.status === 'pending') badgeClass = "bg-yellow-100 text-yellow-800";
-                if(res.status === 'confirmed') badgeClass = "bg-green-100 text-green-800";
-                if(res.status === 'declined') badgeClass = "bg-red-100 text-red-800";
-
-                card.innerHTML = `
-                    <div class="flex justify-between items-start mb-2">
-                        <div>
-                            <h4 class="font-bold text-gray-800">${res.contact.fullName}</h4>
-                            <p class="text-xs text-gray-500">${res.event.eventType} • ${res.event.venue}</p>
-                        </div>
-                        <span class="${badgeClass} text-xs px-2 py-1 rounded font-semibold uppercase">${res.status}</span>
-                    </div>
-                    <div class="text-xs text-gray-600 space-y-1 mb-4 border-t border-gray-100 pt-2">
-                        <p><i class="fa-regular fa-clock w-4"></i> ${res.event.startTime} - ${res.event.endTime} (${res.event.totalHours} hrs)</p>
-                        <p><i class="fa-solid fa-peso-sign w-4"></i> Total: ₱${res.pricing.grandTotal.toLocaleString()}</p>
-                        <p><i class="fa-solid fa-phone w-4"></i> ${res.contact.contactNumber}</p>
-                        <p class="italic text-gray-400">"${res.notes || 'No notes'}"</p>
-                    </div>
-                    <div class="flex gap-2 mt-2">
-                        ${res.status === 'pending' ? `
-                        <button onclick="setStatus('${res.id}', 'confirmed')" class="flex-1 bg-green-600 text-white py-1.5 rounded text-xs font-medium hover:bg-green-700">Accept</button>
-                        <button onclick="setStatus('${res.id}', 'declined')" class="flex-1 bg-red-500 text-white py-1.5 rounded text-xs font-medium hover:bg-red-600">Decline</button>
-                        ` : ''}
-                        <button onclick="openEdit('${res.id}')" class="px-3 border border-gray-300 rounded text-xs hover:bg-gray-100"><i class="fa-solid fa-pen"></i></button>
-                        <button onclick="deleteRes('${res.id}')" class="px-3 border border-gray-300 rounded text-xs hover:bg-red-50 text-red-500"><i class="fa-solid fa-trash"></i></button>
-                    </div>
-                `;
+                let badgeClass = res.status === 'pending' ? "bg-yellow-100 text-yellow-800" : res.status === 'confirmed' ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800";
+                card.innerHTML = `<div class="flex justify-between items-start mb-2"><div><h4 class="font-bold text-gray-800">${res.contact.fullName}</h4><p class="text-xs text-gray-500">${res.event.eventType} • ${res.event.venue}</p></div><span class="${badgeClass} text-xs px-2 py-1 rounded font-semibold uppercase">${res.status}</span></div><div class="text-xs text-gray-600 space-y-1 mb-4 border-t border-gray-100 pt-2"><p><i class="fa-regular fa-clock w-4"></i> ${res.event.startTime} - ${res.event.endTime}</p><p><i class="fa-solid fa-peso-sign w-4"></i> ₱${res.pricing.grandTotal.toLocaleString()}</p><p class="italic text-gray-400">"${res.notes || 'No notes'}"</p></div><div class="flex gap-2 mt-2">${res.status === 'pending' ? `<button onclick="setStatus('${res.id}', 'confirmed')" class="flex-1 bg-green-600 text-white py-1.5 rounded text-xs font-medium hover:bg-green-700">Accept</button><button onclick="setStatus('${res.id}', 'declined')" class="flex-1 bg-red-500 text-white py-1.5 rounded text-xs font-medium hover:bg-red-600">Decline</button>` : ''}<button onclick="openEdit('${res.id}')" class="px-3 border border-gray-300 rounded text-xs hover:bg-gray-100"><i class="fa-solid fa-pen"></i></button><button onclick="deleteRes('${res.id}')" class="px-3 border border-gray-300 rounded text-xs hover:bg-red-50 text-red-500"><i class="fa-solid fa-trash"></i></button></div>`;
                 listContainer.appendChild(card);
             });
         }
+        function setStatus(id, newStatus) { const idx = reservations.findIndex(r => r.id === id); if(idx !== -1) { reservations[idx].status = newStatus; saveDatabase(); } }
+        function deleteRes(id) { if(confirm("Permanently delete?")) { reservations = reservations.filter(r => r.id !== id); saveDatabase(); } }
 
-        // --- 4. ACTION HANDLERS ---
-
-        function setStatus(id, newStatus) {
-            const index = reservations.findIndex(r => r.id === id);
-            if (index !== -1) {
-                reservations[index].status = newStatus;
-                saveDatabase();
-            }
-        }
-
-        function deleteRes(id) {
-            if(confirm("Are you sure you want to permanently delete this reservation?")) {
-                reservations = reservations.filter(r => r.id !== id);
-                saveDatabase();
-            }
-        }
-
-        // Edit Modal
-        function openEdit(id) {
-            const res = reservations.find(r => r.id === id);
-            if(!res) return;
-            document.getElementById('edit-id').value = res.id;
-            document.getElementById('edit-name').value = res.contact.fullName;
-            document.getElementById('edit-type').value = res.event.eventType;
-            document.getElementById('edit-cost').value = res.pricing.grandTotal;
-            document.getElementById('editModal').classList.remove('hidden');
-        }
-
-        function closeModal() {
-            document.getElementById('editModal').classList.add('hidden');
-        }
-
-        function saveReservationChanges(e) {
-            e.preventDefault();
-            const id = document.getElementById('edit-id').value;
-            const index = reservations.findIndex(r => r.id === id);
-            
-            if (index !== -1) {
-                reservations[index].contact.fullName = document.getElementById('edit-name').value;
-                reservations[index].event.eventType = document.getElementById('edit-type').value;
-                reservations[index].pricing.grandTotal = parseFloat(document.getElementById('edit-cost').value);
-                saveDatabase();
-                closeModal();
-            }
-        }
-
-        // --- 5. ANALYTICS ---
+        // --- ANALYTICS ---
         function renderAnalytics() {
-            // Stats Calculation
+            // 1. Basic Stats
             const confirmed = reservations.filter(r => r.status === 'confirmed');
             const pending = reservations.filter(r => r.status === 'pending');
             const cancelled = reservations.filter(r => r.status === 'declined');
-
-            document.getElementById('stat-total-confirmed').innerText = confirmed.length;
+            
+            document.getElementById('stat-total-bookings').innerText = reservations.length;
             document.getElementById('stat-pending').innerText = pending.length;
             document.getElementById('stat-cancelled').innerText = cancelled.length;
 
-            // Most Reserved Venue Logic
             const venueCounts = {};
-            confirmed.forEach(r => {
-                const v = r.event.venue;
-                venueCounts[v] = (venueCounts[v] || 0) + 1;
-            });
-            let topVenue = "N/A";
-            let maxCount = 0;
-            for (const [v, count] of Object.entries(venueCounts)) {
-                if(count > maxCount) { maxCount = count; topVenue = v; }
-            }
+            confirmed.forEach(r => { venueCounts[r.event.venue] = (venueCounts[r.event.venue] || 0) + 1; });
+            let topVenue = "N/A", max = 0;
+            for (const [v, c] of Object.entries(venueCounts)) { if(c > max) { max = c; topVenue = v; } }
             document.getElementById('stat-venue').innerText = topVenue;
 
-            // Chart.js Rendering
+            // 2. Destroy Old Charts
+            if(charts.line) charts.line.destroy();
+            if(charts.bar) charts.bar.destroy();
             if(charts.status) charts.status.destroy();
             if(charts.venue) charts.venue.destroy();
 
-            // Status Chart (Pie)
+            // 3. Monthly Trend Logic
+            const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+            const trendData = new Array(12).fill(0);
+            reservations.forEach(r => {
+                const d = new Date(r.submittedAt);
+                // Simple logic: count booking if it's in the current year
+                if(d.getFullYear() === new Date().getFullYear()) {
+                    trendData[d.getMonth()]++;
+                }
+            });
+
+            // 4. Bookings Overview Logic
+            const now = new Date();
+            const last7 = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+            const last30 = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+            
+            const count7 = reservations.filter(r => new Date(r.submittedAt) >= last7).length;
+            const count30 = reservations.filter(r => new Date(r.submittedAt) >= last30).length;
+            const countAll = reservations.length;
+
+            // Render Charts
+            const ctxLine = document.getElementById('lineChart').getContext('2d');
+            charts.line = new Chart(ctxLine, {
+                type: 'line',
+                data: { labels: months, datasets: [{ label: 'Bookings', data: trendData, borderColor: '#8b5cf6', backgroundColor: 'rgba(139, 92, 246, 0.1)', fill: true, tension: 0.3 }] },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+
+            const ctxBar = document.getElementById('barChart').getContext('2d');
+            charts.bar = new Chart(ctxBar, {
+                type: 'bar',
+                data: { labels: ['Last 7 Days', 'Last 30 Days', 'All Time'], datasets: [{ label: 'Total', data: [count7, count30, countAll], backgroundColor: ['#3b82f6', '#10b981', '#6366f1'] }] },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+
             const ctxStatus = document.getElementById('statusChart').getContext('2d');
             charts.status = new Chart(ctxStatus, {
                 type: 'doughnut',
-                data: {
-                    labels: ['Confirmed', 'Pending', 'Declined'],
-                    datasets: [{
-                        data: [confirmed.length, pending.length, cancelled.length],
-                        backgroundColor: ['#22c55e', '#eab308', '#ef4444']
-                    }]
-                },
+                data: { labels: ['Confirmed', 'Pending', 'Declined'], datasets: [{ data: [confirmed.length, pending.length, cancelled.length], backgroundColor: ['#22c55e', '#eab308', '#ef4444'] }] },
                 options: { responsive: true, maintainAspectRatio: false }
             });
 
-            // Venue Chart (Bar) - Create labels based on what exists
-            const labels = Object.keys(venueCounts);
-            const data = Object.values(venueCounts);
-            
             const ctxVenue = document.getElementById('venueChart').getContext('2d');
             charts.venue = new Chart(ctxVenue, {
                 type: 'bar',
-                data: {
-                    labels: labels.length ? labels : ['No Data'],
-                    datasets: [{
-                        label: 'Bookings',
-                        data: data.length ? data : [0],
-                        backgroundColor: '#3c5473'
-                    }]
-                },
+                data: { labels: Object.keys(venueCounts).length ? Object.keys(venueCounts) : ['No Data'], datasets: [{ label: 'Bookings', data: Object.values(venueCounts).length ? Object.values(venueCounts) : [0], backgroundColor: '#3c5473' }] },
                 options: { responsive: true, maintainAspectRatio: false }
             });
         }
 
-        // --- UTILS ---
-        function switchTab(tabName) {
-            ['calendar', 'analytics', 'inventory'].forEach(t => {
-                document.getElementById(`section-${t}`).classList.add('hidden');
-                document.getElementById(`tab-${t}`).className = "px-4 py-2 rounded-md text-sm font-medium text-gray-500 hover:text-gray-900 transition";
+        // --- INVENTORY ---
+        function renderInventoryTable() {
+            const tbody = document.getElementById('inventory-table-body');
+            tbody.innerHTML = "";
+            const todayStr = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            const todayIso = new Date().toISOString().split('T')[0];
+            const bookingsToday = reservations.filter(r => r.status === 'confirmed' && (r.event.dates.includes(todayStr) || r.event.dates.includes(todayIso)));
+
+            inventory.forEach(item => {
+                let booked = 0;
+                bookingsToday.forEach(b => { if(b.equipment) { const eq = b.equipment.find(e => e.name.includes(item.name)); if(eq) booked += parseInt(eq.qty); } });
+                const avail = item.qty - booked;
+                tbody.innerHTML += `<tr class="hover:bg-gray-50"><td class="py-4 px-4 font-medium">${item.name}</td><td class="py-4 px-4">${item.unit}</td><td class="py-4 px-4">₱${item.price}</td><td class="py-4 px-4 text-center text-gray-600 font-bold">${item.qty}</td><td class="py-4 px-4 text-center text-orange-600 bg-gray-50">${booked || '-'}</td><td class="py-4 px-4 text-center font-bold ${avail < 0 ? 'text-red-600' : 'text-green-600'}">${avail}</td><td class="py-4 px-4 text-right"><button onclick="openInventoryModal(${item.id})" class="text-pgso-blue text-xs mr-2 hover:underline"><i class="fa-solid fa-pen"></i> Edit</button><button onclick="deleteInventoryItem(${item.id})" class="text-red-500 text-xs hover:underline"><i class="fa-solid fa-trash"></i></button></td></tr>`;
             });
-            document.getElementById(`section-${tabName}`).classList.remove('hidden');
-            document.getElementById(`tab-${tabName}`).className = "px-4 py-2 rounded-md text-sm font-medium bg-white shadow-sm transition text-gray-900";
-            
-            if(tabName === 'analytics') renderAnalytics(); // Refresh charts
         }
+
+        // --- MODAL UTILS ---
+        function openEdit(id) { const r = reservations.find(x => x.id === id); if(r) { document.getElementById('edit-id').value = r.id; document.getElementById('edit-name').value = r.contact.fullName; document.getElementById('edit-type').value = r.event.eventType; document.getElementById('edit-cost').value = r.pricing.grandTotal; document.getElementById('editModal').classList.remove('hidden'); } }
+        function saveReservationChanges(e) { e.preventDefault(); const id = document.getElementById('edit-id').value; const idx = reservations.findIndex(r => r.id === id); if(idx !== -1) { reservations[idx].contact.fullName = document.getElementById('edit-name').value; reservations[idx].event.eventType = document.getElementById('edit-type').value; reservations[idx].pricing.grandTotal = parseFloat(document.getElementById('edit-cost').value); saveDatabase(); closeModal('editModal'); } }
+        
+        function openInventoryModal(id = null) {
+            document.getElementById('inventoryModal').classList.remove('hidden');
+            if(id) {
+                const item = inventory.find(i => i.id === id);
+                document.getElementById('inv-modal-title').innerText = "Edit Equipment"; document.getElementById('inv-id').value = item.id; document.getElementById('inv-name').value = item.name; document.getElementById('inv-unit').value = item.unit; document.getElementById('inv-price').value = item.price; document.getElementById('inv-qty').value = item.qty;
+            } else {
+                document.getElementById('inv-modal-title').innerText = "Add Equipment"; document.getElementById('inv-id').value = ""; document.getElementById('inv-name').value = ""; document.getElementById('inv-unit').value = ""; document.getElementById('inv-price').value = ""; document.getElementById('inv-qty').value = "";
+            }
+        }
+        function saveInventoryItem(e) { e.preventDefault(); const id = document.getElementById('inv-id').value; const item = { id: id ? parseInt(id) : (inventory.length > 0 ? Math.max(...inventory.map(i=>i.id))+1 : 1), name: document.getElementById('inv-name').value, unit: document.getElementById('inv-unit').value, price: parseFloat(document.getElementById('inv-price').value), qty: parseInt(document.getElementById('inv-qty').value) }; if(id) { const idx = inventory.findIndex(i=>i.id == id); if(idx !== -1) inventory[idx] = item; } else { inventory.push(item); } saveInventoryDB(); closeModal('inventoryModal'); }
+        function deleteInventoryItem(id) { if(confirm("Delete item?")) { inventory = inventory.filter(i => i.id !== id); saveInventoryDB(); } }
+        
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+        function switchTab(t) { ['calendar','analytics','inventory'].forEach(x => { document.getElementById(`section-${x}`).classList.add('hidden'); document.getElementById(`tab-${x}`).className = "px-4 py-2 rounded-md text-sm font-medium text-gray-500 hover:text-gray-900 transition"; }); document.getElementById(`section-${t}`).classList.remove('hidden'); document.getElementById(`tab-${t}`).className = "px-4 py-2 rounded-md text-sm font-medium bg-white shadow-sm transition text-gray-900"; if(t==='analytics') renderAnalytics(); if(t==='inventory') renderInventoryTable(); }
     </script>
 </body>
 </html>
